@@ -1,447 +1,844 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>📈 Crypto Portfolio Dashboard</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0a0e27;
-      color: #e0e6ed;
-      padding: 16px;
-      line-height: 1.5;
-    }
-    .header {
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .header h1 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .header .subtitle {
-      color: #8b93a7;
-      font-size: 14px;
-    }
-    .timestamp {
-      color: #8b93a7;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-    .portfolio-summary {
-      background: linear-gradient(135deg, #1a1f3a 0%, #0f1535 100%);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      border: 1px solid #2a3050;
-    }
-    .portfolio-summary h2 {
-      font-size: 16px;
-      color: #8b93a7;
-      margin-bottom: 12px;
-    }
-    .portfolio-value {
-      font-size: 36px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-    .portfolio-change {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .portfolio-change.negative {
-      color: #ff6b6b;
-    }
-    .portfolio-change.positive {
-      color: #51cf66;
-    }
-    .portfolio-details {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #2a3050;
-    }
-    .detail-item {
-      text-align: center;
-    }
-    .detail-label {
-      font-size: 12px;
-      color: #8b93a7;
-      margin-bottom: 4px;
-    }
-    .detail-value {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .strategy-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    @media (min-width: 768px) {
-      .strategy-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    .strategy-card {
-      background: linear-gradient(135deg, #1a1f3a 0%, #0f1535 100%);
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px solid #2a3050;
-    }
-    .strategy-card.winner {
-      border-color: #51cf66;
-      box-shadow: 0 0 20px rgba(81, 207, 102, 0.2);
-    }
-    .strategy-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .strategy-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-    .strategy-title {
-      flex: 1;
-    }
-    .strategy-name {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .strategy-type {
-      font-size: 12px;
-      color: #8b93a7;
-    }
-    .strategy-value {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .strategy-change {
-      font-size: 16px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
-    }
-    .change-negative {
-      background: rgba(255, 107, 107, 0.2);
-      color: #ff6b6b;
-    }
-    .change-positive {
-      background: rgba(81, 207, 102, 0.2);
-      color: #51cf66;
-    }
-    .strategy-stats {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #2a3050;
-    }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    .stat-row:last-child {
-      margin-bottom: 0;
-    }
-    .stat-label {
-      color: #8b93a7;
-    }
-    .positions-section {
-      background: linear-gradient(135deg, #1a1f3a 0%, #0f1535 100%);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      border: 1px solid #2a3050;
-    }
-    .positions-section h3 {
-      font-size: 18px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .position-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .position-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-    }
-    .position-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .position-icon.active {
-      background: #51cf66;
-      color: #0a0e27;
-    }
-    .position-icon.stopped {
-      background: #ff6b6b;
-      color: #0a0e27;
-    }
-    .position-details {
-      flex: 1;
-    }
-    .position-name {
-      font-weight: 600;
-    }
-    .position-strategy {
-      font-size: 12px;
-      color: #8b93a7;
-    }
-    .insights-section {
-      background: linear-gradient(135deg, #1a3a2d 0%, #0f2d1f 100%);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      border: 1px solid #2a503a;
-    }
-    .insights-section h3 {
-      font-size: 18px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .insight-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    .insight-icon {
-      color: #51cf66;
-    }
-    .footer {
-      text-align: center;
-      color: #8b93a7;
-      font-size: 12px;
-      margin-top: 24px;
-    }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-    .badge-success {
-      background: rgba(81, 207, 102, 0.2);
-      color: #51cf66;
-    }
-    .badge-warning {
-      background: rgba(255, 193, 7, 0.2);
-      color: #ffc107;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crypto Trading Command Center</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-elevated: #252535;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #2a2a3a;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        .container { max-width: 100%; padding: 16px; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border-radius: 20px;
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .header-title {
+            font-size: 26px;
+            font-weight: 800;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        .status-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .portfolio-item {
+            background: rgba(0,0,0,0.2);
+            padding: 16px;
+            border-radius: 12px;
+        }
+        
+        .portfolio-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .portfolio-value {
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        .portfolio-value.negative { color: var(--accent-red); }
+        .portfolio-value.positive { color: var(--accent-green); }
+        
+        .portfolio-change {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .positive { color: var(--accent-green); }
+        .negative { color: var(--accent-red); }
+        
+        /* Section Headers */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 28px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* Strategy Cards */
+        .strategy-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+        
+        .strategy-card.winner { border-left: 4px solid var(--accent-green); }
+        .strategy-card.loser { border-left: 4px solid var(--accent-red); }
+        .strategy-card.neutral { border-left: 4px solid var(--accent-yellow); }
+        
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .strategy-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .strategy-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .strategy-return {
+            text-align: right;
+        }
+        
+        .return-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+        
+        .return-value.positive { color: var(--accent-green); }
+        .return-value.negative { color: var(--accent-red); }
+        .return-value.neutral { color: var(--accent-yellow); }
+        
+        .return-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .strategy-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .tag-winner { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .tag-loser { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .tag-neutral { background: rgba(245, 158, 11, 0.2); color: var(--accent-yellow); }
+        
+        .strategy-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        /* Positions */
+        .positions-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .position-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .position-asset {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .asset-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .btc { background: rgba(247, 147, 26, 0.2); color: #f7931a; }
+        .eth { background: rgba(98, 126, 234, 0.2); color: #627eea; }
+        .sol { background: rgba(20, 241, 149, 0.2); color: #14f195; }
+        .link { background: rgba(46, 142, 238, 0.2); color: #2e8eee; }
+        .dot { background: rgba(230, 0, 122, 0.2); color: #e6007e; }
+        .ada { background: rgba(0, 51, 173, 0.2); color: #3b82f6; }
+        
+        .asset-details h4 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .asset-details span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .position-pnl {
+            text-align: right;
+        }
+        
+        .pnl-value {
+            font-size: 15px;
+            font-weight: 700;
+        }
+        
+        .pnl-pct {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Insights Cards */
+        .insights-card {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(0,0,0,0) 100%);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .insights-card.warning {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(0,0,0,0) 100%);
+            border-color: rgba(239,68,68,0.3);
+        }
+        
+        .insights-card.info {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(0,0,0,0) 100%);
+            border-color: rgba(59,130,246,0.3);
+        }
+        
+        .insights-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .insight-item {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .insight-item:last-child { border-bottom: none; }
+        
+        /* Trade History */
+        .trade-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .trade-strategy {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 60px;
+        }
+        
+        .trade-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .trade-details span {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .trade-pnl {
+            text-align: right;
+        }
+        
+        .trade-pnl-value {
+            font-size: 15px;
+            font-weight: 700;
+        }
+        
+        .trade-pnl-value.win { color: var(--accent-green); }
+        .trade-pnl-value.loss { color: var(--accent-red); }
+        
+        /* Market Grid */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .market-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border);
+        }
+        
+        .market-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .market-price {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .market-change {
+            font-size: 12px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        @media (min-width: 768px) {
+            .container { max-width: 700px; margin: 0 auto; }
+            .portfolio-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <h1>📈 Crypto Portfolio Dashboard</h1>
-    <div class="subtitle">Paper Trading Phase 1 — Day 6 of 21</div>
-    <div class="timestamp">Last Updated: Feb 5, 2026 4:50 PM EST</div>
-  </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div>
+                    <div class="header-title">📈 Crypto Portfolio</div>
+                    <div class="header-subtitle">Paper Trading | Day 6/21</div>
+                </div>
+                <div class="status-badge">ACTIVE</div>
+            </div>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-label">Total Value</div>
+                    <div class="portfolio-value negative">$1,913</div>
+                    <div class="portfolio-change negative">-$87 (-4.4%)</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-label">Starting Capital</div>
+                    <div class="portfolio-value">$2,000</div>
+                    <div class="portfolio-change">Jan 31, 2026</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-label">Active Strategies</div>
+                    <div class="portfolio-value">4</div>
+                    <div class="portfolio-change">1 Market-Neutral</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-label">Cash Available</div>
+                    <div class="portfolio-value">$500</div>
+                    <div class="portfolio-change">26.1% of portfolio</div>
+                </div>
+            </div>
+        </div>
 
-  <div class="portfolio-summary">
-    <h2>Total Portfolio Value</h2>
-    <div class="portfolio-value">$1,913</div>
-    <div class="portfolio-change negative">-$87 (-4.4%)</div>
-    <div class="portfolio-details">
-      <div class="detail-item">
-        <div class="detail-label">Start Capital</div>
-        <div class="detail-value">$2,000</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">Trading Days</div>
-        <div class="detail-value">6</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">Quota Status</div>
-        <div class="detail-value" style="color: #51cf66;">✓ Compliant</div>
-      </div>
-    </div>
-  </div>
+        <!-- Key Insights -->
+        <div class="section-title">📊 Performance Insights</div>
+        
+        <div class="insights-card">
+            <div class="insights-title" style="color: var(--accent-green);">✅ What's Working</div>
+            <div class="insight-item">• <strong>Active Scalper:</strong> Only profitable strategy (+0.6%). Tight stops protecting capital</div>
+            <div class="insight-item">• <strong>Risk Management:</strong> All stops executing correctly. ETH, LINK stops hit protecting downside</div>
+            <div class="insight-item">• <strong>Discipline:</strong> Quota compliance 100%. No over-trading violations</div>
+            <div class="insight-item">• <strong>Learning:</strong> Paper trading proving value — testing strategies without real capital risk</div>
+        </div>
+        
+        <div class="insights-card warning">
+            <div class="insights-title" style="color: var(--accent-red);">⚠️ What's Not Working</div>
+            <div class="insight-item">• <strong>Long-Only in Down Market:</strong> HODL (-8.1%) and Swing (-9.8%) struggling. Fighting the trend</div>
+            <div class="insight-item">• <strong>Position Concentration:</strong> Similar assets across strategies. ETH stops hit across multiple strategies</div>
+            <div class="insight-item">• <strong>Volatility:</strong> Market chop hurting longer-term positions. Scalper benefiting from volatility</div>
+            <div class="insight-item">• <strong>Time in Market:</strong> Longer holds = larger drawdowns in downtrend</div>
+        </div>
 
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <div class="strategy-header">
-        <div class="strategy-icon" style="background: #2d1a3a;">💎</div>
-        <div class="strategy-title">
-          <div class="strategy-name">Buy & Hold</div>
-          <div class="strategy-type">HODL Strategy</div>
+        <!-- Strategy 3: Active Scalper (Winner) -->
+        <div class="section-title">🏆 Strategy Performance</div>
+        
+        <div class="strategy-card winner">
+            <div class="strategy-header">
+                <div class="strategy-info">
+                    <h3>Active Scalper</h3>
+                    <div class="strategy-desc">High-frequency trading with 2-5% profit targets, tight 5% stops</div>
+                    <span class="strategy-tag tag-winner">ONLY PROFITABLE</span>
+                </div>
+                <div class="strategy-return">
+                    <div class="return-value positive">+0.6%</div>
+                    <div class="return-label">+$3</div>
+                </div>
+            </div>
+            <div class="strategy-metrics">
+                <div class="metric">
+                    <div class="metric-value">$503</div>
+                    <div class="metric-label">Current Value</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value positive">40%</div>
+                    <div class="metric-label">Win Rate (2/5)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">5</div>
+                    <div class="metric-label">Total Trades</div>
+                </div>
+            </div>
+            <div class="positions-title">Recent Trades (Last 7 Days)</div>
+            <div class="position-item" style="background: rgba(16,185,129,0.1);">
+                <div class="position-asset">
+                    <div class="asset-icon ada">₳</div>
+                    <div class="asset-details">
+                        <h4>ADA</h4>
+                        <span>Feb 4, 14:30 • +2.38% • 15.9h</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value positive">+$2.38</div>
+                    <div class="pnl-pct">Profit Target</div>
+                </div>
+            </div>
+            <div class="position-item" style="background: rgba(16,185,129,0.1);">
+                <div class="position-asset">
+                    <div class="asset-icon dot">●</div>
+                    <div class="asset-details">
+                        <h4>DOT</h4>
+                        <span>Feb 3, 22:10 • +4.73% • 22.6h</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value positive">+$4.73</div>
+                    <div class="pnl-pct">Above Target</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="strategy-value">$459</div>
-      <div class="strategy-change change-negative">-8.1%</div>
-      <div class="strategy-stats">
-        <div class="stat-row">
-          <span class="stat-label">Positions</span>
-          <span>BTC, SOL</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Stops Hit</span>
-          <span style="color: #ff6b6b;">ETH, LINK</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Status</span>
-          <span>Holding</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="strategy-card">
-      <div class="strategy-header">
-        <div class="strategy-icon" style="background: #1a2d3a;">📊</div>
-        <div class="strategy-title">
-          <div class="strategy-name">Swing Trader</div>
-          <div class="strategy-type">Medium-Term</div>
+        <!-- Strategy 5: Arbitrage -->
+        <div class="strategy-card neutral">
+            <div class="strategy-header">
+                <div class="strategy-info">
+                    <h3>Statistical Arbitrage</h3>
+                    <div class="strategy-desc">Market-neutral pair trading — BTC/ETH correlation</div>
+                    <span class="strategy-tag tag-neutral">MARKET NEUTRAL</span>
+                </div>
+                <div class="strategy-return">
+                    <div class="return-value neutral">0.00%</div>
+                    <div class="return-label">$0.00</div>
+                </div>
+            </div>
+            <div class="strategy-metrics">
+                <div class="metric">
+                    <div class="metric-value">$500</div>
+                    <div class="metric-label">Allocated</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2.04</div>
+                    <div class="metric-label">Entry Z-Score</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">OPEN</div>
+                    <div class="metric-label">Status</div>
+                </div>
+            </div>
+            <div class="positions-title">Active Pair Trade (Open)</div>
+            <div class="position-item">
+                <div class="position-asset">
+                    <div class="asset-icon eth">Ξ</div>
+                    <div class="asset-details">
+                        <h4>ETH LONG</h4>
+                        <span>Feb 2, 18:30 • 2.4 days open</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value">Entry: $2,345</div>
+                    <div class="pnl-pct">$150 position</div>
+                </div>
+            </div>
+            <div class="position-item">
+                <div class="position-asset">
+                    <div class="asset-icon btc">₿</div>
+                    <div class="asset-details">
+                        <h4>BTC SHORT</h4>
+                        <span>Feb 2, 18:30 • 2.4 days open</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value">Entry: $78,200</div>
+                    <div class="pnl-pct">$150 position</div>
+                </div>
+            </div>
+            <div style="margin-top: 12px; font-size: 13px; color: var(--text-secondary); font-style: italic;">
+                📐 Thesis: BTC/ETH ratio elevated (z-score +2.04). Expect mean reversion. Target: z-score returns to 0.
+            </div>
         </div>
-      </div>
-      <div class="strategy-value">$451</div>
-      <div class="strategy-change change-negative">-9.8%</div>
-      <div class="strategy-stats">
-        <div class="stat-row">
-          <span class="stat-label">Positions</span>
-          <span>BTC, ETH</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Stops Hit</span>
-          <span style="color: #ff6b6b;">ETH position</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Status</span>
-          <span>Rebuilding</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="strategy-card winner">
-      <div class="strategy-header">
-        <div class="strategy-icon" style="background: #1a3a2d;">⚡</div>
-        <div class="strategy-title">
-          <div class="strategy-name">Active Scalper</div>
-          <div class="strategy-type">Short-Term</div>
+        <!-- Strategy 1: Buy & Hold -->
+        <div class="strategy-card loser">
+            <div class="strategy-header">
+                <div class="strategy-info">
+                    <h3>Buy & Hold</h3>
+                    <div class="strategy-desc">Passive holds with 5% trailing stops</div>
+                    <span class="strategy-tag tag-loser">DOWN TREND</span>
+                </div>
+                <div class="strategy-return">
+                    <div class="return-value negative">-8.1%</div>
+                    <div class="return-label">-$41</div>
+                </div>
+            </div>
+            <div class="strategy-metrics">
+                <div class="metric">
+                    <div class="metric-value">$459</div>
+                    <div class="metric-label">Current Value</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2</div>
+                    <div class="metric-label">Stops Hit</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2</div>
+                    <div class="metric-label">Active Positions</div>
+                </div>
+            </div>
+            <div class="positions-title">Current Positions (Open)</div>
+            <div class="position-item">
+                <div class="position-asset">
+                    <div class="asset-icon btc">₿</div>
+                    <div class="asset-details">
+                        <h4>BTC</h4>
+                        <span>Jan 31, 08:00 • 6 days open</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value">Holding</div>
+                    <div class="pnl-pct">Trailing stop active</div>
+                </div>
+            </div>
+            <div class="position-item">
+                <div class="position-asset">
+                    <div class="asset-icon sol">S</div>
+                    <div class="asset-details">
+                        <h4>SOL</h4>
+                        <span>Feb 1, 14:20 • 5 days open</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value">Holding</div>
+                    <div class="pnl-pct">Trailing stop active</div>
+                </div>
+            </div>
+            <div class="positions-title" style="margin-top: 16px; opacity: 0.7;">Stopped Positions</div>
+            <div class="position-item" style="opacity: 0.6;">
+                <div class="position-asset">
+                    <div class="asset-icon eth" style="background: rgba(239, 68, 68, 0.3);">Ξ</div>
+                    <div class="asset-details">
+                        <h4>ETH (Stopped)</h4>
+                        <span>Stop loss hit • -5%</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value negative">-$25</div>
+                    <div class="pnl-pct">Exited</div>
+                </div>
+            </div>
         </div>
-        <span class="badge badge-success">WINNER</span>
-      </div>
-      <div class="strategy-value">$503</div>
-      <div class="strategy-change change-positive">+0.6%</div>
-      <div class="strategy-stats">
-        <div class="stat-row">
-          <span class="stat-label">Trades</span>
-          <span>5 (2 wins, 3 losses)</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Win Rate</span>
-          <span>40%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Status</span>
-          <span style="color: #51cf66;">Active</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="positions-section">
-    <h3>📍 Current Positions</h3>
-    <div class="position-list">
-      <div class="position-item">
-        <div class="position-icon active">BTC</div>
-        <div class="position-details">
-          <div class="position-name">Bitcoin</div>
-          <div class="position-strategy">HODL + Swing</div>
+        <!-- Strategy 2: Swing Trader -->
+        <div class="strategy-card loser">
+            <div class="strategy-header">
+                <div class="strategy-info">
+                    <h3>Swing Trader</h3>
+                    <div class="strategy-desc">2-5 day momentum trades with 5% stops</div>
+                    <span class="strategy-tag tag-loser">CHOPPY</span>
+                </div>
+                <div class="strategy-return">
+                    <div class="return-value negative">-9.8%</div>
+                    <div class="return-label">-$49</div>
+                </div>
+            </div>
+            <div class="strategy-metrics">
+                <div class="metric">
+                    <div class="metric-value">$451</div>
+                    <div class="metric-label">Current Value</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">1</div>
+                    <div class="metric-label">Stop Hit</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2</div>
+                    <div class="metric-label">Active Positions</div>
+                </div>
+            </div>
+            <div class="positions-title">Current Positions (Open)</div>
+            <div class="position-item">
+                <div class="position-asset">
+                    <div class="asset-icon btc">₿</div>
+                    <div class="asset-details">
+                        <h4>BTC</h4>
+                        <span>Feb 3, 09:45 • 3 days open</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value">Holding</div>
+                    <div class="pnl-pct">5% stop active</div>
+                </div>
+            </div>
+            <div class="position-item">
+                <div class="position-asset">
+                    <div class="asset-icon eth">Ξ</div>
+                    <div class="asset-details">
+                        <h4>ETH</h4>
+                        <span>Re-entered • 2 days open</span>
+                    </div>
+                </div>
+                <div class="position-pnl">
+                    <div class="pnl-value">Holding</div>
+                    <div class="pnl-pct">5% stop active</div>
+                </div>
+            </div>
         </div>
-        <div style="color: #51cf66;">● Active</div>
-      </div>
-      <div class="position-item">
-        <div class="position-icon active">SOL</div>
-        <div class="position-details">
-          <div class="position-name">Solana</div>
-          <div class="position-strategy">HODL Only</div>
-        </div>
-        <div style="color: #51cf66;">● Active</div>
-      </div>
-      <div class="position-item">
-        <div class="position-icon active">ETH</div>
-        <div class="position-details">
-          <div class="position-name">Ethereum</div>
-          <div class="position-strategy">Swing Position</div>
-        </div>
-        <div style="color: #51cf66;">● Active</div>
-      </div>
-      <div class="position-item">
-        <div class="position-icon stopped">ETH</div>
-        <div class="position-details">
-          <div class="position-name">Ethereum (HODL)</div>
-          <div class="position-strategy">Stop Loss Hit</div>
-        </div>
-        <div style="color: #ff6b6b;">● Stopped</div>
-      </div>
-      <div class="position-item">
-        <div class="position-icon stopped">LINK</div>
-        <div class="position-details">
-          <div class="position-name">Chainlink</div>
-          <div class="position-strategy">Stop Loss Hit</div>
-        </div>
-        <div style="color: #ff6b6b;">● Stopped</div>
-      </div>
-    </div>
-  </div>
 
-  <div class="insights-section">
-    <h3>💡 Key Insights</h3>
-    <div class="insight-item">
-      <span class="insight-icon">✓</span>
-      <span><strong>Scalper outperforms:</strong> Only profitable strategy (+0.6%) in volatile market conditions</span>
-    </div>
-    <div class="insight-item">
-      <span class="insight-icon">✓</span>
-      <span><strong>Stop discipline working:</strong> All stops respected, protecting capital</span>
-    </div>
-    <div class="insight-item">
-      <span class="insight-icon">✓</span>
-      <span><strong>Volatile market lesson:</strong> Tight risk management beats long-term conviction</span>
-    </div>
-    <div class="insight-item">
-      <span class="insight-icon">📊</span>
-      <span><strong>Paper trading value:</strong> Learning strategy discipline without real capital risk</span>
-    </div>
-  </div>
+        <!-- Recent Trades -->
+        <div class="section-title">📈 Recent Trade History</div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">SCALPER<br><small style="color: var(--text-muted);">Feb 4, 14:30</small></div>
+            <div class="trade-details">
+                <h4>ADA Close</h4>
+                <span>Profit Target Hit • 15.9h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value win">+$2.38</div>
+                <div class="pnl-pct">+2.38%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">SCALPER<br><small style="color: var(--text-muted);">Feb 4, 12:15</small></div>
+            <div class="trade-details">
+                <h4>SOL Close</h4>
+                <span>Stop Loss Hit • 18.5h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value loss">-$2.78</div>
+                <div class="pnl-pct">-2.78%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">SCALPER<br><small style="color: var(--text-muted);">Feb 4, 10:45</small></div>
+            <div class="trade-details">
+                <h4>BTC Close</h4>
+                <span>Early Exit • 12.2h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value loss">-$2.42</div>
+                <div class="pnl-pct">-2.42%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">SCALPER<br><small style="color: var(--text-muted);">Feb 4, 08:20</small></div>
+            <div class="trade-details">
+                <h4>ETH Close</h4>
+                <span>Stop Loss Hit • 45.5h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value loss">-$7.02</div>
+                <div class="pnl-pct">-7.02%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">SCALPER<br><small style="color: var(--text-muted);">Feb 3, 22:10</small></div>
+            <div class="trade-details">
+                <h4>DOT Close</h4>
+                <span>Above Target • 22.6h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value win">+$4.73</div>
+                <div class="pnl-pct">+4.73%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">BUY&HOLD<br><small style="color: var(--text-muted);">Feb 2, 16:00</small></div>
+            <div class="trade-details">
+                <h4>LINK Close</h4>
+                <span>Stop Loss Hit • 52h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value loss">-$7.45</div>
+                <div class="pnl-pct">-7.45%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">BUY&HOLD<br><small style="color: var(--text-muted);">Feb 2, 14:30</small></div>
+            <div class="trade-details">
+                <h4>ETH Close</h4>
+                <span>Stop Loss Hit • 48h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value loss">-$7.02</div>
+                <div class="pnl-pct">-7.02%</div>
+            </div>
+        </div>
+        
+        <div class="trade-item">
+            <div class="trade-strategy">SWING<br><small style="color: var(--text-muted);">Feb 2, 11:00</small></div>
+            <div class="trade-details">
+                <h4>ETH Close</h4>
+                <span>Stop Loss Hit • 36h hold</span>
+            </div>
+            <div class="trade-pnl">
+                <div class="trade-pnl-value loss">-$7.78</div>
+                <div class="pnl-pct">-7.78%</div>
+            </div>
+        </div>
 
-  <div class="footer">
-    <p>Crypto Trader Dashboard | Paper Trading Phase 1 | OpenClaw 2026.2.2-3</p>
-    <p style="margin-top: 8px;">Next Update: 7 AM EST (Morning Brief) | Stop Loss Check: Every 2 hours</p>
-  </div>
+        <!-- Market Summary -->
+        <div class="section-title">🌍 Market vs Strategy</div>
+        
+        <div class="market-grid">
+            <div class="market-card">
+                <div class="market-name">Bitcoin</div>
+                <div class="market-price">$78,861</div>
+                <div class="market-change negative">-1.54% (24h)</div>
+            </div>
+            <div class="market-card">
+                <div class="market-name">Ethereum</div>
+                <div class="market-price">$2,371</div>
+                <div class="market-change negative">-5.20% (24h)</div>
+            </div>
+            <div class="market-card">
+                <div class="market-name">Solana</div>
+                <div class="market-price">$104.61</div>
+                <div class="market-change negative">-0.60% (24h)</div>
+            </div>
+            <div class="market-card">
+                <div class="market-name">Total Market</div>
+                <div class="market-price">$2.4T</div>
+                <div class="market-change negative">-2.1% (24h)</div>
+            </div>
+        </div>
+
+        <div class="insights-card info" style="margin-top: 20px;">
+            <div class="insights-title" style="color: var(--accent-blue);">📊 Key Lesson</div>
+            <div class="insight-item">• <strong>Market:</strong> Down market (-2.1%). All major assets declining</div>
+            <div class="insight-item">• <strong>Our Edge:</strong> Active Scalper profitable despite downtrend. Strategy 5 adds market-neutral hedge</div>
+            <div class="insight-item">• <strong>Gap:</strong> Need Strategy 4 (short selling) for bear markets</div>
+            <div class="insight-item">• <strong>Validation:</strong> Paper trading working — learning without real losses</div>
+        </div>
+
+        <div class="footer">
+            Crypto Trading Command Center v2.0<br>
+            Last Updated: Feb 5, 2026 4:55 PM EST<br>
+            Paper Trading Phase 1 • Day 6/21<br>
+            Next Update: 7 AM EST (Morning Brief)
+        </div>
+    </div>
 </body>
 </html>
