@@ -3,14 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>📈 Strategy Comparison</title>
+  <title>📈 Crypto Portfolio Dashboard</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #0a0e27;
@@ -18,428 +13,435 @@
       padding: 16px;
       line-height: 1.5;
     }
-    
     .header {
       margin-bottom: 24px;
       text-align: center;
     }
-    
     .header h1 {
       font-size: 24px;
       font-weight: 600;
       margin-bottom: 8px;
     }
-    
     .header .subtitle {
       color: #8b93a7;
       font-size: 14px;
     }
-    
+    .timestamp {
+      color: #8b93a7;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .portfolio-summary {
+      background: linear-gradient(135deg, #1a1f3a 0%, #0f1535 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      border: 1px solid #2a3050;
+    }
+    .portfolio-summary h2 {
+      font-size: 16px;
+      color: #8b93a7;
+      margin-bottom: 12px;
+    }
+    .portfolio-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .portfolio-change {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .portfolio-change.negative {
+      color: #ff6b6b;
+    }
+    .portfolio-change.positive {
+      color: #51cf66;
+    }
+    .portfolio-details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #2a3050;
+    }
+    .detail-item {
+      text-align: center;
+    }
+    .detail-label {
+      font-size: 12px;
+      color: #8b93a7;
+      margin-bottom: 4px;
+    }
+    .detail-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
     .strategy-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
       margin-bottom: 24px;
     }
-    
     @media (min-width: 768px) {
       .strategy-grid {
         grid-template-columns: repeat(3, 1fr);
       }
     }
-    
     .strategy-card {
-      background: #1a1f3a;
+      background: linear-gradient(135deg, #1a1f3a 0%, #0f1535 100%);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2a3050;
+    }
+    .strategy-card.winner {
+      border-color: #51cf66;
+      box-shadow: 0 0 20px rgba(81, 207, 102, 0.2);
+    }
+    .strategy-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .strategy-icon {
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
-      padding: 16px;
-      border-top: 3px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
     }
-    
-    .strategy-card.hodl {
-      border-top-color: #3b82f6;
-    }
-    
-    .strategy-card.swing {
-      border-top-color: #10b981;
-    }
-    
-    .strategy-card.scalper {
-      border-top-color: #f59e0b;
-    }
-    
     .strategy-title {
+      flex: 1;
+    }
+    .strategy-name {
       font-size: 16px;
       font-weight: 600;
-      margin-bottom: 4px;
     }
-    
-    .strategy-desc {
+    .strategy-type {
       font-size: 12px;
       color: #8b93a7;
-      margin-bottom: 16px;
-      line-height: 1.4;
     }
-    
-    .stat {
-      background: #0f1329;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-    
-    .stat-label {
-      font-size: 12px;
-      color: #8b93a7;
-      margin-bottom: 4px;
-    }
-    
-    .stat-value {
-      font-size: 20px;
-      font-weight: 600;
-    }
-    
-    .stat-value.positive {
-      color: #10b981;
-    }
-    
-    .stat-value.negative {
-      color: #ef4444;
-    }
-    
-    .mini-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-top: 8px;
-    }
-    
-    .mini-stat {
-      font-size: 12px;
-      padding: 8px;
-      background: #0f1329;
-      border-radius: 6px;
-    }
-    
-    .mini-stat-label {
-      color: #8b93a7;
-      margin-bottom: 2px;
-    }
-    
-    .mini-stat-value {
-      font-weight: 600;
-    }
-    
-    .position-item {
-      background: #0f1329;
-      border-radius: 6px;
-      padding: 10px;
-      margin-bottom: 6px;
-      font-size: 12px;
-    }
-    
-    .position-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-    
-    .position-symbol {
-      font-weight: 600;
-      font-size: 13px;
-    }
-    
-    .position-pnl {
-      font-weight: 600;
-      font-size: 13px;
-    }
-    
-    .position-details {
-      color: #8b93a7;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-    
-    .leaderboard {
-      background: #1a1f3a;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    
-    .leaderboard-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-    
-    .leaderboard-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background: #0f1329;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-    
-    .leaderboard-rank {
-      font-size: 24px;
+    .strategy-value {
+      font-size: 28px;
       font-weight: 700;
-      width: 40px;
+      margin-bottom: 8px;
     }
-    
-    .leaderboard-name {
-      flex: 1;
+    .strategy-change {
+      font-size: 16px;
       font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
     }
-    
-    .leaderboard-value {
+    .change-negative {
+      background: rgba(255, 107, 107, 0.2);
+      color: #ff6b6b;
+    }
+    .change-positive {
+      background: rgba(81, 207, 102, 0.2);
+      color: #51cf66;
+    }
+    .strategy-stats {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #2a3050;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .stat-row:last-child {
+      margin-bottom: 0;
+    }
+    .stat-label {
+      color: #8b93a7;
+    }
+    .positions-section {
+      background: linear-gradient(135deg, #1a1f3a 0%, #0f1535 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      border: 1px solid #2a3050;
+    }
+    .positions-section h3 {
       font-size: 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .position-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .position-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    .position-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .position-icon.active {
+      background: #51cf66;
+      color: #0a0e27;
+    }
+    .position-icon.stopped {
+      background: #ff6b6b;
+      color: #0a0e27;
+    }
+    .position-details {
+      flex: 1;
+    }
+    .position-name {
       font-weight: 600;
     }
-    
-    .refresh-indicator {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      animation: pulse 2s infinite;
+    .position-strategy {
+      font-size: 12px;
+      color: #8b93a7;
     }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .insights-section {
+      background: linear-gradient(135deg, #1a3a2d 0%, #0f2d1f 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      border: 1px solid #2a503a;
+    }
+    .insights-section h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .insight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .insight-icon {
+      color: #51cf66;
+    }
+    .footer {
+      text-align: center;
+      color: #8b93a7;
+      font-size: 12px;
+      margin-top: 24px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    .badge-success {
+      background: rgba(81, 207, 102, 0.2);
+      color: #51cf66;
+    }
+    .badge-warning {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
     }
   </style>
 </head>
 <body>
-  <div class="refresh-indicator"></div>
-  
   <div class="header">
-    <h1>📈 Strategy Battle</h1>
-    <div class="subtitle">
-      3 Strategies | 1 Week | $500 Each
-      <br>
-      <span id="last-update" style="font-size: 11px; color: #10b981;">● Live</span>
-    </div>
+    <h1>📈 Crypto Portfolio Dashboard</h1>
+    <div class="subtitle">Paper Trading Phase 1 — Day 6 of 21</div>
+    <div class="timestamp">Last Updated: Feb 5, 2026 4:50 PM EST</div>
   </div>
-  
-  <div class="leaderboard">
-    <div class="leaderboard-title">🏆 Current Standings</div>
-    <div id="leaderboard-list">
-      <div class="leaderboard-item">
-        <div class="leaderboard-rank">1</div>
-        <div class="leaderboard-name">Loading...</div>
-        <div class="leaderboard-value">$0.00</div>
+
+  <div class="portfolio-summary">
+    <h2>Total Portfolio Value</h2>
+    <div class="portfolio-value">$1,913</div>
+    <div class="portfolio-change negative">-$87 (-4.4%)</div>
+    <div class="portfolio-details">
+      <div class="detail-item">
+        <div class="detail-label">Start Capital</div>
+        <div class="detail-value">$2,000</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Trading Days</div>
+        <div class="detail-value">6</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Quota Status</div>
+        <div class="detail-value" style="color: #51cf66;">✓ Compliant</div>
       </div>
     </div>
   </div>
-  
+
   <div class="strategy-grid">
-    <div class="strategy-card hodl">
-      <div class="strategy-title">🔵 Buy & Hold</div>
-      <div class="strategy-desc">Hold quality positions, only exit on stops</div>
-      <div class="stat">
-        <div class="stat-label">Total Value</div>
-        <div class="stat-value" id="hodl-value">$500.00</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">P&L</div>
-        <div class="stat-value" id="hodl-pnl">$0.00</div>
-      </div>
-      <div class="mini-stats">
-        <div class="mini-stat">
-          <div class="mini-stat-label">Return</div>
-          <div class="mini-stat-value" id="hodl-return">0.00%</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Positions</div>
-          <div class="mini-stat-value" id="hodl-positions">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Trades</div>
-          <div class="mini-stat-value" id="hodl-trades">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Win Rate</div>
-          <div class="mini-stat-value" id="hodl-winrate">-%</div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background: #2d1a3a;">💎</div>
+        <div class="strategy-title">
+          <div class="strategy-name">Buy & Hold</div>
+          <div class="strategy-type">HODL Strategy</div>
         </div>
       </div>
-      <div id="hodl-positions-list" style="margin-top: 12px;"></div>
+      <div class="strategy-value">$459</div>
+      <div class="strategy-change change-negative">-8.1%</div>
+      <div class="strategy-stats">
+        <div class="stat-row">
+          <span class="stat-label">Positions</span>
+          <span>BTC, SOL</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Stops Hit</span>
+          <span style="color: #ff6b6b;">ETH, LINK</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Status</span>
+          <span>Holding</span>
+        </div>
+      </div>
     </div>
-    
-    <div class="strategy-card swing">
-      <div class="strategy-title">🟢 Swing Trader</div>
-      <div class="strategy-desc">2-5 day holds, 7-10% profit targets</div>
-      <div class="stat">
-        <div class="stat-label">Total Value</div>
-        <div class="stat-value" id="swing-value">$500.00</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">P&L</div>
-        <div class="stat-value" id="swing-pnl">$0.00</div>
-      </div>
-      <div class="mini-stats">
-        <div class="mini-stat">
-          <div class="mini-stat-label">Return</div>
-          <div class="mini-stat-value" id="swing-return">0.00%</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Positions</div>
-          <div class="mini-stat-value" id="swing-positions">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Trades</div>
-          <div class="mini-stat-value" id="swing-trades">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Win Rate</div>
-          <div class="mini-stat-value" id="swing-winrate">-%</div>
+
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background: #1a2d3a;">📊</div>
+        <div class="strategy-title">
+          <div class="strategy-name">Swing Trader</div>
+          <div class="strategy-type">Medium-Term</div>
         </div>
       </div>
-      <div id="swing-positions-list" style="margin-top: 12px;"></div>
+      <div class="strategy-value">$451</div>
+      <div class="strategy-change change-negative">-9.8%</div>
+      <div class="strategy-stats">
+        <div class="stat-row">
+          <span class="stat-label">Positions</span>
+          <span>BTC, ETH</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Stops Hit</span>
+          <span style="color: #ff6b6b;">ETH position</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Status</span>
+          <span>Rebuilding</span>
+        </div>
+      </div>
     </div>
-    
-    <div class="strategy-card scalper">
-      <div class="strategy-title">🟡 Active Scalper</div>
-      <div class="strategy-desc">Intraday trades, quick 2-5% gains</div>
-      <div class="stat">
-        <div class="stat-label">Total Value</div>
-        <div class="stat-value" id="scalper-value">$500.00</div>
+
+    <div class="strategy-card winner">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background: #1a3a2d;">⚡</div>
+        <div class="strategy-title">
+          <div class="strategy-name">Active Scalper</div>
+          <div class="strategy-type">Short-Term</div>
+        </div>
+        <span class="badge badge-success">WINNER</span>
       </div>
-      <div class="stat">
-        <div class="stat-label">P&L</div>
-        <div class="stat-value" id="scalper-pnl">$0.00</div>
-      </div>
-      <div class="mini-stats">
-        <div class="mini-stat">
-          <div class="mini-stat-label">Return</div>
-          <div class="mini-stat-value" id="scalper-return">0.00%</div>
+      <div class="strategy-value">$503</div>
+      <div class="strategy-change change-positive">+0.6%</div>
+      <div class="strategy-stats">
+        <div class="stat-row">
+          <span class="stat-label">Trades</span>
+          <span>5 (2 wins, 3 losses)</span>
         </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Positions</div>
-          <div class="mini-stat-value" id="scalper-positions">0</div>
+        <div class="stat-row">
+          <span class="stat-label">Win Rate</span>
+          <span>40%</span>
         </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Trades</div>
-          <div class="mini-stat-value" id="scalper-trades">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Win Rate</div>
-          <div class="mini-stat-value" id="scalper-winrate">-%</div>
+        <div class="stat-row">
+          <span class="stat-label">Status</span>
+          <span style="color: #51cf66;">Active</span>
         </div>
       </div>
-      <div id="scalper-positions-list" style="margin-top: 12px;"></div>
     </div>
   </div>
-  
-  <script>
-    const token = window.location.pathname.split('/').pop();
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const ws = new WebSocket(`${wsProtocol}//${window.location.host}/${token}`);
-    
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === 'strategies') {
-        updateDashboard(message.data);
-      }
-    };
-    
-    ws.onopen = () => {
-      console.log('Connected to strategy dashboard');
-    };
-    
-    ws.onclose = () => {
-      console.log('Disconnected, reconnecting...');
-      setTimeout(() => location.reload(), 3000);
-    };
-    
-    function updateDashboard(strategies) {
-      if (!strategies) return;
-      
-      // Update each strategy
-      ['hodl', 'swing', 'scalper'].forEach((name, idx) => {
-        const strategy = strategies[name];
-        if (!strategy) return;
-        
-        const totalValue = strategy.currentCapital;
-        const totalPnL = totalValue - strategy.startingCapital;
-        const returnPct = ((totalPnL / strategy.startingCapital) * 100).toFixed(2);
-        const winRate = strategy.performance.totalTrades > 0 
-          ? ((strategy.performance.wins / strategy.performance.totalTrades) * 100).toFixed(0) + '%'
-          : '-%';
-        
-        document.getElementById(`${name}-value`).textContent = `$${totalValue.toFixed(2)}`;
-        document.getElementById(`${name}-pnl`).textContent = `$${totalPnL.toFixed(2)}`;
-        document.getElementById(`${name}-pnl`).className = `stat-value ${totalPnL >= 0 ? 'positive' : 'negative'}`;
-        document.getElementById(`${name}-return`).textContent = `${returnPct}%`;
-        document.getElementById(`${name}-positions`).textContent = strategy.positions.length;
-        document.getElementById(`${name}-trades`).textContent = strategy.performance.totalTrades;
-        document.getElementById(`${name}-winrate`).textContent = winRate;
-        
-        // Render positions
-        const positionsList = document.getElementById(`${name}-positions-list`);
-        if (strategy.positions && strategy.positions.length > 0) {
-          positionsList.innerHTML = strategy.positions.map(pos => {
-            const pnl = pos.unrealizedPnL || 0;
-            const pnlPct = pos.unrealizedPnLPct || 0;
-            const pnlClass = pnl >= 0 ? 'positive' : 'negative';
-            return `
-              <div class="position-item">
-                <div class="position-header">
-                  <div class="position-symbol">${pos.symbol}</div>
-                  <div class="position-pnl ${pnlClass}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}</div>
-                </div>
-                <div class="position-details">
-                  ${pos.size.toFixed(4)} @ $${pos.entryPrice.toFixed(2)}
-                  ${pos.currentPrice ? ` → $${pos.currentPrice.toFixed(2)}` : ''}
-                  ${pnlPct !== 0 ? ` (${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%)` : ''}
-                </div>
-              </div>
-            `;
-          }).join('');
-        } else {
-          positionsList.innerHTML = '<div style="color: #8b93a7; font-size: 12px; text-align: center; padding: 8px;">No positions</div>';
-        }
-      });
-      
-      // Update leaderboard
-      const leaderboard = [
-        { name: '🔵 Buy & Hold', value: strategies.hodl.currentCapital, key: 'hodl' },
-        { name: '🟢 Swing Trader', value: strategies.swing.currentCapital, key: 'swing' },
-        { name: '🟡 Active Scalper', value: strategies.scalper.currentCapital, key: 'scalper' }
-      ].sort((a, b) => b.value - a.value);
-      
-      const leaderboardHtml = leaderboard.map((item, idx) => {
-        const pnl = item.value - 500;
-        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
-        return `
-          <div class="leaderboard-item">
-            <div class="leaderboard-rank">${idx + 1}</div>
-            <div class="leaderboard-name">${item.name}</div>
-            <div class="leaderboard-value ${pnlClass}">$${item.value.toFixed(2)}</div>
-          </div>
-        `;
-      }).join('');
-      
-      document.getElementById('leaderboard-list').innerHTML = leaderboardHtml;
-      
-      // Update timestamp
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      document.getElementById('last-update').innerHTML = `● Live<br><span style="font-size: 11px;">Last: ${timeStr}</span>`;
-    }
-    
-    // Initial load
-    fetch(`/api/${token}/strategies`)
-      .then(r => r.json())
-      .then(data => updateDashboard(data))
-      .catch(e => console.error('Failed to load strategies:', e));
-  </script>
+
+  <div class="positions-section">
+    <h3>📍 Current Positions</h3>
+    <div class="position-list">
+      <div class="position-item">
+        <div class="position-icon active">BTC</div>
+        <div class="position-details">
+          <div class="position-name">Bitcoin</div>
+          <div class="position-strategy">HODL + Swing</div>
+        </div>
+        <div style="color: #51cf66;">● Active</div>
+      </div>
+      <div class="position-item">
+        <div class="position-icon active">SOL</div>
+        <div class="position-details">
+          <div class="position-name">Solana</div>
+          <div class="position-strategy">HODL Only</div>
+        </div>
+        <div style="color: #51cf66;">● Active</div>
+      </div>
+      <div class="position-item">
+        <div class="position-icon active">ETH</div>
+        <div class="position-details">
+          <div class="position-name">Ethereum</div>
+          <div class="position-strategy">Swing Position</div>
+        </div>
+        <div style="color: #51cf66;">● Active</div>
+      </div>
+      <div class="position-item">
+        <div class="position-icon stopped">ETH</div>
+        <div class="position-details">
+          <div class="position-name">Ethereum (HODL)</div>
+          <div class="position-strategy">Stop Loss Hit</div>
+        </div>
+        <div style="color: #ff6b6b;">● Stopped</div>
+      </div>
+      <div class="position-item">
+        <div class="position-icon stopped">LINK</div>
+        <div class="position-details">
+          <div class="position-name">Chainlink</div>
+          <div class="position-strategy">Stop Loss Hit</div>
+        </div>
+        <div style="color: #ff6b6b;">● Stopped</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insights-section">
+    <h3>💡 Key Insights</h3>
+    <div class="insight-item">
+      <span class="insight-icon">✓</span>
+      <span><strong>Scalper outperforms:</strong> Only profitable strategy (+0.6%) in volatile market conditions</span>
+    </div>
+    <div class="insight-item">
+      <span class="insight-icon">✓</span>
+      <span><strong>Stop discipline working:</strong> All stops respected, protecting capital</span>
+    </div>
+    <div class="insight-item">
+      <span class="insight-icon">✓</span>
+      <span><strong>Volatile market lesson:</strong> Tight risk management beats long-term conviction</span>
+    </div>
+    <div class="insight-item">
+      <span class="insight-icon">📊</span>
+      <span><strong>Paper trading value:</strong> Learning strategy discipline without real capital risk</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Crypto Trader Dashboard | Paper Trading Phase 1 | OpenClaw 2026.2.2-3</p>
+    <p style="margin-top: 8px;">Next Update: 7 AM EST (Morning Brief) | Stop Loss Check: Every 2 hours</p>
+  </div>
 </body>
 </html>
