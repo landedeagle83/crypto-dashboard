@@ -34,6 +34,7 @@
             text-align: center;
             padding: 20px 0;
             margin-bottom: 20px;
+            position: relative;
         }
         
         .header h1 {
@@ -45,7 +46,36 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .header .date { color: #888; font-size: 13px; }
+        .header .date { color: #888; font-size: 13px; margin-bottom: 15px; }
+        
+        /* Refresh Button */
+        .refresh-btn {
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,212,255,0.4);
+        }
+        
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+        
+        .refresh-icon {
+            font-size: 16px;
+        }
         
         /* Section headers */
         .section-title {
@@ -227,6 +257,10 @@
         <div class="header">
             <h1>📊 Crypto Command Center</h1>
             <div class="date">Live Trading • Feb 6, 2026 • 4:17 PM UTC</div>
+            <button class="refresh-btn" onclick="location.reload()">
+                <span class="refresh-icon">🔄</span>
+                <span>Refresh Data</span>
+            </button>
         </div>
         
         <!-- Key Performance -->
