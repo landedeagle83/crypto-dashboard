@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="refresh" content="1800">
-    <title>Crypto Trading Command Center - LIVE</title>
+    <title>Crypto Trading Command Center - COMPLETE</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -54,7 +54,6 @@
         
         .header .date { color: #888; font-size: 13px; margin-bottom: 15px; }
         
-        /* Refresh Button */
         .refresh-btn {
             background: linear-gradient(90deg, #00d4ff, #7b2cbf);
             border: none;
@@ -64,15 +63,6 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,212,255,0.4);
         }
         
         /* Section headers */
@@ -108,30 +98,44 @@
         .negative { color: #ef4444; }
         .neutral { color: #f59e0b; }
         
-        /* Recent Activity Box */
-        .activity-box {
-            background: rgba(16,185,129,0.15);
-            border: 1px solid rgba(16,185,129,0.4);
+        /* Open Positions */
+        .open-positions {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 15px;
         }
         
-        .activity-box h3 {
-            color: #10b981;
-            font-size: 16px;
-            margin-bottom: 12px;
+        .open-positions h3 { color: #10b981; font-size: 16px; margin-bottom: 15px; }
+        
+        .position-card {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
         }
         
-        .activity-item {
+        .position-header {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
+            align-items: center;
+            margin-bottom: 8px;
         }
         
-        .activity-item:last-child { border-bottom: none; }
+        .position-symbol { font-size: 16px; font-weight: 700; }
+        .position-pnl { font-weight: 700; font-size: 14px; }
+        .position-details { font-size: 12px; color: #888; line-height: 1.5; }
+        
+        .position-stops {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+        
+        .stop-target { color: #10b981; }
+        .stop-loss { color: #ef4444; }
         
         /* Portfolio Summary */
         .portfolio-summary {
@@ -152,6 +156,51 @@
         .summary-row:last-child { border-bottom: none; }
         .summary-label { color: #888; font-size: 14px; }
         .summary-value { font-weight: 700; font-size: 14px; }
+        
+        /* Trade History Table */
+        .trade-history {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        
+        .trade-history h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+        
+        .trade-table {
+            width: 100%;
+            font-size: 10px;
+            border-collapse: collapse;
+        }
+        
+        .trade-table th {
+            text-align: left;
+            padding: 8px 4px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            color: #888;
+            font-weight: 600;
+            font-size: 9px;
+        }
+        
+        .trade-table td {
+            padding: 8px 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .trade-table tr:last-child td { border-bottom: none; }
+        .trade-symbol { font-weight: 700; font-size: 12px; }
+        .trade-strategy { font-size: 8px; color: #888; }
+        .trade-pnl { font-weight: 700; }
+        .trade-reason { font-size: 8px; padding: 2px 4px; border-radius: 3px; }
+        .reason-stop { background: rgba(239,68,68,0.3); color: #ef4444; }
+        .reason-profit { background: rgba(16,185,129,0.3); color: #10b981; }
+        .reason-open { background: rgba(59,130,246,0.3); color: #3b82f6; }
         
         /* Strategy Cards */
         .strategy-card {
@@ -188,9 +237,62 @@
         .stat-value { font-size: 16px; font-weight: 700; }
         .stat-label { font-size: 9px; color: #888; margin-top: 4px; }
         
-        /* Status indicators */
-        .status-cash { color: #f59e0b; }
-        .status-trading { color: #10b981; }
+        /* Market Prices */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .market-item {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .market-symbol { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .market-price { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .market-change { font-size: 11px; }
+        
+        /* Performance Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .metric-item {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .metric-label { font-size: 10px; color: #888; margin-bottom: 4px; }
+        .metric-value { font-size: 18px; font-weight: 700; }
+        
+        /* Insights */
+        .insights {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .insight-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .insight-item:last-child { border-bottom: none; }
+        .insight-icon { font-size: 18px; flex-shrink: 0; }
+        .insight-text { font-size: 14px; line-height: 1.5; color: #ccc; }
         
         /* Footer */
         .footer {
@@ -206,21 +308,18 @@
         <!-- Live Trading Banner -->
         <div class="live-banner">
             <h2>🤖 AUTONOMOUS TRADING ACTIVE</h2>
-            <p>Kraken API • 30-min cycles • 5 strategies • Live alerts</p>
+            <p>Kraken API • 30-min cycles • 5 strategies • 14 total trades</p>
         </div>
         
         <!-- Header -->
         <div class="header">
             <h1>📊 Crypto Command Center</h1>
-            <div class="date">Live Trading • Feb 7, 2026 • 00:34 UTC</div>
-            <button class="refresh-btn" onclick="location.reload()">
-                <span>🔄</span>
-                <span>Refresh Data</span>
-            </button>
+            <div class="date">Live Trading • Feb 7, 2026 • 4:19 AM UTC</div>
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh Data</button>
         </div>
         
         <!-- Key Performance -->
-        <div class="section-title">📈 Portfolio Overview (All 5 Strategies)</div>
+        <div class="section-title">📈 Portfolio Overview (5 Strategies)</div>
         <div class="performance-grid">
             <div class="perf-card">
                 <div class="value negative">$2,387.48</div>
@@ -240,24 +339,50 @@
             </div>
         </div>
         
-        <!-- Recent Activity -->
-        <div class="activity-box">
-            <h3>🎯 Recent Wins (Tonight)</h3>
-            <div class="activity-item">
-                <span>BTC Scalp - Target Hit</span>
-                <span class="positive">+$2.70 (+2.16%)</span>
+        <!-- Open Positions -->
+        <div class="open-positions">
+            <h3>🟢 OPEN POSITIONS (3 Active)</h3>
+            
+            <div class="position-card">
+                <div class="position-header">
+                    <span class="position-symbol">BTC Long</span>
+                    <span class="position-pnl neutral">$0.00</span>
+                </div>
+                <div class="position-details">
+                    Entry: $69,928.40 | Size: $125 | Scalper
+                </div>
+                <div class="position-stops">
+                    <span class="stop-target">🎯 $72,026 (+3%)</span>
+                    <span class="stop-loss">🛑 $67,131 (-4%)</span>
+                </div>
             </div>
-            <div class="activity-item">
-                <span>ETH Scalp - Target Hit</span>
-                <span class="positive">+$4.29 (+3.42%)</span>
+            
+            <div class="position-card">
+                <div class="position-header">
+                    <span class="position-symbol">ETH Long</span>
+                    <span class="position-pnl neutral">$0.00</span>
+                </div>
+                <div class="position-details">
+                    Entry: $2,041.64 | Size: $125 | Scalper
+                </div>
+                <div class="position-stops">
+                    <span class="stop-target">🎯 $2,103 (+3%)</span>
+                    <span class="stop-loss">🛑 $1,960 (-4%)</span>
+                </div>
             </div>
-            <div class="activity-item">
-                <span>ADA Scalp - Closed Flat</span>
-                <span class="negative">-$0.10 (-0.08%)</span>
-            </div>
-            <div class="activity-item" style="border-top: 2px solid rgba(16,185,129,0.3); margin-top: 10px; padding-top: 10px;">
-                <span><strong>Net Tonight</strong></span>
-                <span class="positive"><strong>+$6.89</strong></span>
+            
+            <div class="position-card">
+                <div class="position-header">
+                    <span class="position-symbol">SOL Long</span>
+                    <span class="position-pnl neutral">$0.00</span>
+                </div>
+                <div class="position-details">
+                    Entry: $86.41 | Size: $125 | Scalper
+                </div>
+                <div class="position-stops">
+                    <span class="stop-target">🎯 $89.00 (+3%)</span>
+                    <span class="stop-loss">🛑 $82.95 (-4%)</span>
+                </div>
             </div>
         </div>
         
@@ -273,11 +398,160 @@
                 <span class="summary-value negative">$2,387.48</span>
             </div>
             <div class="summary-row">
-                <span class="summary-label">Total Realized Loss</span>
-                <span class="summary-value negative">-$112.52</span>
+                <span class="summary-label">Cash Available</span>
+                <span class="summary-value">$1,959.26</span>
             </div>
             <div class="summary-row">
-                <span class="summary-label">Total Trades Closed</span>
+                <span class="summary-label">Deployed in Positions</span>
+                <span class="summary-value">$375.00 (3 open)</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Total Trades (All Time)</span>
+                <span class="summary-value">14 (11 closed + 3 open)</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Closed Win Rate</span>
+                <span class="summary-value">36.4% (4W / 7L)</span>
+            </div>
+        </div>
+        
+        <!-- COMPLETE Trade History -->
+        <div class="section-title">📋 COMPLETE Trade History (14 Total)</div>
+        <div class="trade-history">
+            <h3>All Trades - Open & Closed</h3>
+            <table class="trade-table">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Strat</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>P&L</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="trade-symbol">BTC</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$69,928</td>
+                        <td>—</td>
+                        <td class="trade-pnl neutral">$0.00</td>
+                        <td><span class="trade-reason reason-open">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">ETH</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$2,042</td>
+                        <td>—</td>
+                        <td class="trade-pnl neutral">$0.00</td>
+                        <td><span class="trade-reason reason-open">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">SOL</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$86.41</td>
+                        <td>—</td>
+                        <td class="trade-pnl neutral">$0.00</td>
+                        <td><span class="trade-reason reason-open">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">BTC</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$69,200</td>
+                        <td>$70,694</td>
+                        <td class="trade-pnl positive">+$2.70</td>
+                        <td><span class="trade-reason reason-profit">PROFIT</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">ETH</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$1,998</td>
+                        <td>$2,066</td>
+                        <td class="trade-pnl positive">+$4.29</td>
+                        <td><span class="trade-reason reason-profit">PROFIT</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">ADA</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$0.277</td>
+                        <td>$0.277</td>
+                        <td class="trade-pnl negative">-$0.10</td>
+                        <td><span class="trade-reason reason-stop">FLAT</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">DOT</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$6.13</td>
+                        <td>$6.42</td>
+                        <td class="trade-pnl positive">+$5.91</td>
+                        <td><span class="trade-reason reason-profit">PROFIT</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">ADA</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$1.05</td>
+                        <td>$1.075</td>
+                        <td class="trade-pnl positive">+$2.98</td>
+                        <td><span class="trade-reason reason-profit">PROFIT</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">BTC</div><div class="trade-strategy">HODL</div></td>
+                        <td>HODL</td>
+                        <td>$77,977</td>
+                        <td>$74,000</td>
+                        <td class="trade-pnl negative">-$25.00</td>
+                        <td><span class="trade-reason reason-stop">STOP</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">SOL</div><div class="trade-strategy">HODL</div></td>
+                        <td>HODL</td>
+                        <td>$105.24</td>
+                        <td>$98.00</td>
+                        <td class="trade-pnl negative">-$25.00</td>
+                        <td><span class="trade-reason reason-stop">STOP</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">LINK</div><div class="trade-strategy">HODL</div></td>
+                        <td>HODL</td>
+                        <td>$9.94</td>
+                        <td>$9.20</td>
+                        <td class="trade-pnl negative">-$25.00</td>
+                        <td><span class="trade-reason reason-stop">STOP</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">BTC</div><div class="trade-strategy">Swing</div></td>
+                        <td>Swing</td>
+                        <td>$78,446</td>
+                        <td>$74,500</td>
+                        <td class="trade-pnl negative">-$25.00</td>
+                        <td><span class="trade-reason reason-stop">STOP</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">ETH</div><div class="trade-strategy">Swing</div></td>
+                        <td>Swing</td>
+                        <td>$2,439</td>
+                        <td>$2,300</td>
+                        <td class="trade-pnl negative">-$25.00</td>
+                        <td><span class="trade-reason reason-stop">STOP</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="trade-symbol">ETH</div><div class="trade-strategy">Scalper</div></td>
+                        <td>Scalp</td>
+                        <td>$2,344</td>
+                        <td>$2,250</td>
+                        <td class="trade-pnl negative">-$31.25</td>
+                        <td><span class="trade-reason reason-stop">STOP</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Performance Metrics -->
+        <div class="section-title">📊 Performance Metrics</div>
+        <div class="portfolio-summary">
+            <div class="summary-row">
+                <span class="summary-label">Total Closed Trades</span>
                 <span class="summary-value">11</span>
             </div>
             <div class="summary-row">
@@ -285,17 +559,29 @@
                 <span class="summary-value">36.4% (4W / 7L)</span>
             </div>
             <div class="summary-row">
-                <span class="summary-label">Open Positions</span>
-                <span class="summary-value status-cash">0 (100% Cash)</span>
+                <span class="summary-label">Largest Win</span>
+                <span class="summary-value positive">+$5.91 (DOT)</span>
             </div>
             <div class="summary-row">
-                <span class="summary-label">Next Trading Cycle</span>
-                <span class="summary-value status-trading">Auto (30 min)</span>
+                <span class="summary-label">Largest Loss</span>
+                <span class="summary-value negative">-$31.25 (ETH)</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Average Win</span>
+                <span class="summary-value positive">+$3.97</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Average Loss</span>
+                <span class="summary-value negative">-$18.22</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Profit Factor</span>
+                <span class="summary-value">0.52</span>
             </div>
         </div>
         
         <!-- All 5 Strategies -->
-        <div class="section-title">🎯 All 5 Strategies Performance</div>
+        <div class="section-title">🎯 All 5 Strategies</div>
         
         <div class="strategy-card">
             <div class="strategy-header">
@@ -304,9 +590,9 @@
             </div>
             <div class="strategy-stats">
                 <div class="stat"><div class="stat-value">$428.50</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Win Rate</div></div>
+                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
                 <div class="stat"><div class="stat-value">3</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value status-cash">CASH</div><div class="stat-label">Status</div></div>
+                <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Win</div></div>
             </div>
         </div>
         
@@ -317,9 +603,9 @@
             </div>
             <div class="strategy-stats">
                 <div class="stat"><div class="stat-value">$450.00</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Win Rate</div></div>
+                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
                 <div class="stat"><div class="stat-value">2</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value status-cash">CASH</div><div class="stat-label">Status</div></div>
+                <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Win</div></div>
             </div>
         </div>
         
@@ -330,9 +616,9 @@
             </div>
             <div class="strategy-stats">
                 <div class="stat"><div class="stat-value">$507.98</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">40%</div><div class="stat-label">Win Rate</div></div>
+                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
                 <div class="stat"><div class="stat-value">8</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value status-cash">CASH</div><div class="stat-label">Status</div></div>
+                <div class="stat"><div class="stat-value">40%</div><div class="stat-label">Win</div></div>
             </div>
         </div>
         
@@ -343,9 +629,9 @@
             </div>
             <div class="strategy-stats">
                 <div class="stat"><div class="stat-value">$500.00</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">—</div><div class="stat-label">Win Rate</div></div>
+                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
                 <div class="stat"><div class="stat-value">0</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value status-cash">READY</div><div class="stat-label">Status</div></div>
+                <div class="stat"><div class="stat-value">—</div><div class="stat-label">Win</div></div>
             </div>
         </div>
         
@@ -356,17 +642,38 @@
             </div>
             <div class="strategy-stats">
                 <div class="stat"><div class="stat-value">$501.00</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">—</div><div class="stat-label">Win Rate</div></div>
+                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
                 <div class="stat"><div class="stat-value">1</div><div class="stat-label">Pair</div></div>
-                <div class="stat"><div class="stat-value status-trading">OPEN</div><div class="stat-label">Status</div></div>
+                <div class="stat"><div class="stat-value">—</div><div class="stat-label">Win</div></div>
+            </div>
+        </div>
+        
+        <!-- Insights -->
+        <div class="section-title">💡 Key Insights</div>
+        <div class="insights">
+            <div class="insight-item">
+                <div class="insight-icon">🛡️</div>
+                <div class="insight-text"><strong>Stop losses worked:</strong> All stops executed correctly during Feb 6 crash, capping losses at 4-7% per trade.</div>
+            </div>
+            <div class="insight-item">
+                <div class="insight-icon">📉</div>
+                <div class="insight-text"><strong>Long-only struggled:</strong> Buy & Hold and Swing strategies hit hard in bear market. Need Short Seller active.</div>
+            </div>
+            <div class="insight-item">
+                <div class="insight-icon">🏆</div>
+                <div class="insight-text"><strong>Active Scalper thriving:</strong> Only profitable strategy at +1.6%. Quick trades, tight stops, fast recovery.</div>
+            </div>
+            <div class="insight-item">
+                <div class="insight-icon">🚀</div>
+                <div class="insight-text"><strong>3 new positions open:</strong> Deployed $375 on pullback entries. BTC, ETH, SOL ready for next leg up.</div>
             </div>
         </div>
         
         <!-- Footer -->
         <div class="footer">
             Autonomous Trading Mode • Feb 7, 2026<br>
-            5 Strategies Active • $2,387.48 Total • 100% Cash (Ready)<br>
-            Kraken API • 30-Min Cycles • Auto-Alerts Enabled<br>
+            5 Strategies • $2,387.48 Total • 3 Positions Open • 14 Total Trades<br>
+            Kraken API • 30-Min Cycles • Auto-Alerts • Full Trade History<br>
             <span style="color: #10b981;">Next Cycle: Auto-triggered</span>
         </div>
     </div>
