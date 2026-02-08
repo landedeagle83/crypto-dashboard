@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="refresh" content="900">
-    <title>Crypto Trading - MAXIMUM AUTONOMY MODE</title>
+    <title>Crypto Trading - LIVE PRICES</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -15,28 +14,20 @@
             color: #fff;
             padding: 15px;
         }
-        
         .container { max-width: 100%; margin: 0 auto; }
-        
-        /* Max Autonomy Banner */
-        .max-banner {
+        .live-banner {
             background: linear-gradient(90deg, #dc2626, #991b1b);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
             text-align: center;
         }
-        
-        .max-banner h2 { font-size: 18px; margin-bottom: 5px; }
-        .max-banner p { font-size: 13px; opacity: 0.9; }
-        
-        /* Header */
+        .live-banner h2 { font-size: 18px; margin-bottom: 5px; }
         .header {
             text-align: center;
             padding: 20px 0;
             margin-bottom: 20px;
         }
-        
         .header h1 {
             font-size: 24px;
             font-weight: 700;
@@ -45,9 +36,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
         .header .date { color: #888; font-size: 13px; margin-bottom: 15px; }
-        
         .refresh-btn {
             background: linear-gradient(90deg, #00d4ff, #7b2cbf);
             border: none;
@@ -58,8 +47,6 @@
             font-weight: 600;
             cursor: pointer;
         }
-        
-        /* Section headers */
         .section-title {
             font-size: 14px;
             font-weight: 600;
@@ -68,15 +55,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
-        /* Performance Cards */
         .performance-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-bottom: 20px;
         }
-        
         .perf-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -84,133 +68,66 @@
             padding: 20px 15px;
             text-align: center;
         }
-        
         .perf-card .value { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
         .perf-card .label { font-size: 11px; color: #888; text-transform: uppercase; }
-        
         .positive { color: #10b981; }
         .negative { color: #ef4444; }
         .neutral { color: #f59e0b; }
         
-        /* Autonomy Status Box */
-        .autonomy-box {
-            background: rgba(220,38,38,0.15);
-            border: 1px solid rgba(220,38,38,0.4);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .autonomy-box h3 {
-            color: #ef4444;
-            font-size: 16px;
-            margin-bottom: 12px;
-        }
-        
-        .autonomy-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 13px;
-        }
-        
-        .autonomy-item:last-child { border-bottom: none; }
-        
-        /* Open Positions */
-        .open-positions {
+        /* Live Prices Section */
+        .live-prices {
             background: rgba(16,185,129,0.1);
             border: 1px solid rgba(16,185,129,0.3);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 15px;
         }
-        
-        .open-positions h3 { color: #10b981; font-size: 16px; margin-bottom: 15px; }
-        
-        .position-card {
+        .live-prices h3 { color: #10b981; font-size: 16px; margin-bottom: 15px; }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .price-item {
             background: rgba(0,0,0,0.2);
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 12px;
+            text-align: center;
         }
+        .price-symbol { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .price-value { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .price-change { font-size: 11px; }
         
-        .position-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .position-symbol { font-size: 16px; font-weight: 700; }
-        .position-pnl { font-weight: 700; font-size: 14px; }
-        .position-details { font-size: 12px; color: #888; line-height: 1.5; }
-        
-        .position-stops {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 11px;
-        }
-        
-        .stop-target { color: #10b981; }
-        .stop-loss { color: #ef4444; }
-        
-        /* Portfolio Summary */
-        .portfolio-summary {
+        /* Positions Table */
+        .positions-table {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 15px;
+            overflow-x: auto;
         }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
+        .positions-table h3 { font-size: 16px; margin-bottom: 15px; color: #00d4ff; }
+        table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            padding: 8px 4px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            color: #888;
+            font-weight: 600;
+            font-size: 10px;
+        }
+        td {
+            padding: 10px 4px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .summary-row:last-child { border-bottom: none; }
-        .summary-label { color: #888; font-size: 14px; }
-        .summary-value { font-weight: 700; font-size: 14px; }
-        
-        /* Strategy Cards */
-        .strategy-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .strategy-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .strategy-name { font-size: 16px; font-weight: 600; }
-        
-        .strategy-badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-        
-        .badge-green { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid #10b981; }
-        .badge-red { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; }
-        .badge-yellow { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid #f59e0b; }
-        .badge-blue { background: rgba(59,130,246,0.2); color: #3b82f6; border: 1px solid #3b82f6; }
-        .badge-purple { background: rgba(168,85,247,0.2); color: #a855f7; border: 1px solid #a855f7; }
-        
-        .strategy-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .stat { text-align: center; }
-        .stat-value { font-size: 16px; font-weight: 700; }
-        .stat-label { font-size: 9px; color: #888; margin-top: 4px; }
+        tr:last-child td { border-bottom: none; }
+        .asset { font-weight: 700; font-size: 12px; }
+        .entry { font-size: 10px; color: #888; }
         
         /* Footer */
         .footer {
@@ -223,280 +140,186 @@
 </head>
 <body>
     <div class="container">
-        <!-- Max Autonomy Banner -->
-        <div class="max-banner">
-            <h2>🚀 MAXIMUM AUTONOMY MODE</h2>
-            <p>Unlimited positions • Any size • 24/7 • Strategy 4 ACTIVE</p>
+        <div class="live-banner">
+            <h2>🔴 MAXIMUM AUTONOMY - LIVE PRICES</h2>
+            <p>12 Positions • 98.6% Deployed • Real-Time Updates</p>
         </div>
         
-        <!-- Header -->
         <div class="header">
             <h1>📊 Crypto Command Center</h1>
-            <div class="date">Feb 7, 2026 • 9:19 PM UTC • FULL AUTONOMY</div>
-            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+            <div class="date">Feb 8, 2026 • 2:33 AM UTC • LIVE</div>
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh Prices</button>
         </div>
         
         <!-- Key Performance -->
         <div class="section-title">📈 Portfolio Overview</div>
         <div class="performance-grid">
             <div class="perf-card">
-                <div class="value negative">$2,396.69</div>
+                <div class="value">$2,393.00</div>
                 <div class="label">Total Value</div>
             </div>
             <div class="perf-card">
-                <div class="value negative">-4.1%</div>
+                <div class="value negative">-4.3%</div>
                 <div class="label">Total Return</div>
             </div>
             <div class="perf-card">
-                <div class="value">5</div>
+                <div class="value">12</div>
                 <div class="label">Open Positions</div>
             </div>
             <div class="perf-card">
-                <div class="value">$1,709</div>
-                <div class="label">Cash Ready</div>
+                <div class="value">$34</div>
+                <div class="label">Cash</div>
             </div>
         </div>
         
-        <!-- Autonomy Status -->
-        <div class="autonomy-box">
-            <h3>⚡ AUTONOMY SETTINGS (Committed to Memory)</h3>
-            <div class="autonomy-item">
-                <span>Max Positions</span>
-                <span style="color: #ef4444; font-weight: 700;">UNLIMITED</span>
-            </div>
-            <div class="autonomy-item">
-                <span>Position Size</span>
-                <span style="color: #ef4444; font-weight: 700;">ANY</span>
-            </div>
-            <div class="autonomy-item">
-                <span>Min Cash Reserve</span>
-                <span style="color: #ef4444; font-weight: 700;">$0</span>
-            </div>
-            <div class="autonomy-item">
-                <span>Short Selling</span>
-                <span style="color: #10b981; font-weight: 700;">✅ ACTIVE</span>
-            </div>
-            <div class="autonomy-item">
-                <span>Trading Hours</span>
-                <span>24/7 Continuous</span>
-            </div>
-            <div class="autonomy-item">
-                <span>Quiet Hours (No Alerts)</span>
-                <span>11pm-6am UTC</span>
-            </div>
-            <div class="autonomy-item">
-                <span>Check Frequency</span>
-                <span>Every 15 minutes</span>
-            </div>
-        </div>
-        
-        <!-- Open Positions -->
-        <div class="open-positions">
-            <h3>🟢 OPEN POSITIONS (5 Active - Maximum Deployment)</h3>
-            
-            <div class="position-card">
-                <div class="position-header">
-                    <span class="position-symbol">BTC Long</span>
-                    <span class="position-pnl negative">-$0.77</span>
+        <!-- LIVE PRICES -->
+        <div class="live-prices">
+            <h3>📊 LIVE Market Prices (Kraken)</h3>
+            <div class="price-grid">
+                <div class="price-item">
+                    <div class="price-symbol">₿ BTC</div>
+                    <div class="price-value">$69,409</div>
+                    <div class="price-change neutral">0.00%</div>
                 </div>
-                <div class="position-details">Entry: $69,928 | Current: $69,500 | Size: $125</div>
-                <div class="position-stops">
-                    <span class="stop-target">🎯 $72,026 (+3%)</span>
-                    <span class="stop-loss">🛑 $67,131 (-4%)</span>
+                <div class="price-item">
+                    <div class="price-symbol">Ξ ETH</div>
+                    <div class="price-value">$2,093.98</div>
+                    <div class="price-change positive">+0.45%</div>
                 </div>
-            </div>
-            
-            <div class="position-card">
-                <div class="position-header">
-                    <span class="position-symbol">ETH Long</span>
-                    <span class="position-pnl neutral">$0.00</span>
+                <div class="price-item">
+                    <div class="price-symbol">S SOL</div>
+                    <div class="price-value">$87.62</div>
+                    <div class="price-change neutral">-0.08%</div>
                 </div>
-                <div class="position-details">Entry: $2,102.35 | Size: $125 | Just Entered</div>
-                <div class="position-stops">
-                    <span class="stop-target">🎯 $2,165 (+3%)</span>
-                    <span class="stop-loss">🛑 $2,018 (-4%)</span>
+                <div class="price-item">
+                    <div class="price-symbol">● DOT</div>
+                    <div class="price-value">$1.3634</div>
+                    <div class="price-change neutral">-0.07%</div>
                 </div>
-            </div>
-            
-            <div class="position-card">
-                <div class="position-header">
-                    <span class="position-symbol">SOL Long</span>
-                    <span class="position-pnl neutral">$0.00</span>
+                <div class="price-item">
+                    <div class="price-symbol">⬡ LINK</div>
+                    <div class="price-value">$8.91</div>
+                    <div class="price-change positive">+0.15%</div>
                 </div>
-                <div class="position-details">Entry: $88.76 | Size: $125 | Just Entered</div>
-                <div class="position-stops">
-                    <span class="stop-target">🎯 $91.42 (+3%)</span>
-                    <span class="stop-loss">🛑 $85.21 (-4%)</span>
+                <div class="price-item">
+                    <div class="price-symbol">₳ ADA</div>
+                    <div class="price-value">$0.2712</div>
+                    <div class="price-change neutral">-0.18%</div>
                 </div>
-            </div>
-            
-            <div class="position-card">
-                <div class="position-header">
-                    <span class="position-symbol">DOT Long</span>
-                    <span class="position-pnl neutral">$0.00</span>
-                </div>
-                <div class="position-details">Entry: $1.3796 | Size: $125 | Just Entered</div>
-                <div class="position-stops">
-                    <span class="stop-target">🎯 $1.421 (+3%)</span>
-                    <span class="stop-loss">🛑 $1.324 (-4%)</span>
-                </div>
-            </div>
-            
-            <div class="position-card">
-                <div class="position-header">
-                    <span class="position-symbol">LINK Long</span>
-                    <span class="position-pnl neutral">$0.00</span>
-                </div>
-                <div class="position-details">Entry: $8.986 | Size: $125 | Just Entered</div>
-                <div class="position-stops">
-                    <span class="stop-target">🎯 $9.256 (+3%)</span>
-                    <span class="stop-loss">🛑 $8.626 (-4%)</span>
+                <div class="price-item">
+                    <div class="price-symbol">✕ XRP</div>
+                    <div class="price-value">$1.4329</div>
+                    <div class="price-change positive">+0.28%</div>
                 </div>
             </div>
         </div>
         
-        <!-- Portfolio Summary -->
-        <div class="section-title">💰 Portfolio Summary</div>
-        <div class="portfolio-summary">
-            <div class="summary-row">
-                <span class="summary-label">Total Starting Capital</span>
-                <span class="summary-value">$2,500.00 (5 × $500)</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Total Current Value</span>
-                <span class="summary-value negative">$2,396.69</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Cash Available</span>
-                <span class="summary-value">$1,709.24 (Ready to Deploy)</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Deployed in Positions</span>
-                <span class="summary-value">$625.00 (5 open)</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Total Trades</span>
-                <span class="summary-value">18 (13 closed + 5 open)</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Short Strategy</span>
-                <span class="summary-value" style="color: #a855f7;">ACTIVE - Hunting Breakdowns</span>
-            </div>
-        </div>
-        
-        <!-- All 5 Strategies -->
-        <div class="section-title">🎯 All 5 Strategies Status</div>
-        
-        <div class="strategy-card">
-            <div class="strategy-header">
-                <div class="strategy-name">🔵 Strategy 1: Buy & Hold</div>
-                <div class="strategy-badge badge-red">-14.3%</div>
-            </div>
-            <div class="strategy-stats">
-                <div class="stat"><div class="stat-value">$428.50</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
-                <div class="stat"><div class="stat-value">3</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Win</div></div>
-            </div>
-        </div>
-        
-        <div class="strategy-card">
-            <div class="strategy-header">
-                <div class="strategy-name">🟢 Strategy 2: Swing Trader</div>
-                <div class="strategy-badge badge-red">-10.0%</div>
-            </div>
-            <div class="strategy-stats">
-                <div class="stat"><div class="stat-value">$450.00</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
-                <div class="stat"><div class="stat-value">2</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Win</div></div>
-            </div>
-        </div>
-        
-        <div class="strategy-card">
-            <div class="strategy-header">
-                <div class="strategy-name">🟡 Strategy 3: Active Scalper ⭐</div>
-                <div class="strategy-badge badge-green">+3.8%</div>
-            </div>
-            <div class="strategy-stats">
-                <div class="stat"><div class="stat-value">$518.96</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
-                <div class="stat"><div class="stat-value">8</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value">50%</div><div class="stat-label">Win</div></div>
-            </div>
-        </div>
-        
-        <div class="strategy-card">
-            <div class="strategy-header">
-                <div class="strategy-name">🔴 Strategy 4: Short Seller 🆕</div>
-                <div class="strategy-badge badge-purple">ACTIVE</div>
-            </div>
-            <div class="strategy-stats">
-                <div class="stat"><div class="stat-value">$500.00</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
-                <div class="stat"><div class="stat-value">0</div><div class="stat-label">Trades</div></div>
-                <div class="stat"><div class="stat-value">—</div><div class="stat-label">Win</div></div>
-            </div>
-        </div>
-        
-        <div class="strategy-card">
-            <div class="strategy-header">
-                <div class="strategy-name">🟣 Strategy 5: Stat Arb</div>
-                <div class="strategy-badge badge-green">+0.2%</div>
-            </div>
-            <div class="strategy-stats">
-                <div class="stat"><div class="stat-value">$501.00</div><div class="stat-label">Value</div></div>
-                <div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div>
-                <div class="stat"><div class="stat-value">1</div><div class="stat-label">Pair</div></div>
-                <div class="stat"><div class="stat-value">—</div><div class="stat-label">Win</div></div>
-            </div>
-        </div>
-        
-        <!-- COMPLETE Trade History with Dates -->
-        <div class="section-title">📋 Complete Trade History (18 Total with Dates)</div>
-        <div class="trade-history" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 15px; overflow-x: auto;">
-            <h3 style="font-size: 16px; margin-bottom: 15px; color: #00d4ff;">All Trades - Newest First</h3>
-            <table style="width: 100%; font-size: 10px; border-collapse: collapse;">
+        <!-- 12 Positions with Live P&L -->
+        <div class="positions-table">
+            <h3>🎯 12 OPEN POSITIONS (Live P&L)</h3>
+            <table>
                 <thead>
                     <tr>
-                        <th style="text-align: left; padding: 8px 4px; border-bottom: 2px solid rgba(255,255,255,0.2); color: #888; font-weight: 600; font-size: 9px;">Asset</th>
-                        <th style="text-align: left; padding: 8px 4px; border-bottom: 2px solid rgba(255,255,255,0.2); color: #888; font-weight: 600; font-size: 9px;">Date</th>
-                        <th style="text-align: left; padding: 8px 4px; border-bottom: 2px solid rgba(255,255,255,0.2); color: #888; font-weight: 600; font-size: 9px;">Entry</th>
-                        <th style="text-align: left; padding: 8px 4px; border-bottom: 2px solid rgba(255,255,255,0.2); color: #888; font-weight: 600; font-size: 9px;">Exit</th>
-                        <th style="text-align: left; padding: 8px 4px; border-bottom: 2px solid rgba(255,255,255,0.2); color: #888; font-weight: 600; font-size: 9px;">P&L</th>
-                        <th style="text-align: left; padding: 8px 4px; border-bottom: 2px solid rgba(255,255,255,0.2); color: #888; font-weight: 600; font-size: 9px;">Status</th>
+                        <th>Asset</th>
+                        <th>Entry</th>
+                        <th>Live Price</th>
+                        <th>P&L</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">BTC</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$69,928</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$69,500</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$0.77</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(59,130,246,0.3); color: #3b82f6;">OPEN</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ETH</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,102</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">—</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #f59e0b; font-weight: 700;">$0.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(59,130,246,0.3); color: #3b82f6;">OPEN</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">SOL</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$88.76</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">—</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #f59e0b; font-weight: 700;">$0.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(59,130,246,0.3); color: #3b82f6;">OPEN</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">DOT</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$1.38</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">—</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #f59e0b; font-weight: 700;">$0.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(59,130,246,0.3); color: #3b82f6;">OPEN</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">LINK</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$8.99</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">—</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #f59e0b; font-weight: 700;">$0.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(59,130,246,0.3); color: #3b82f6;">OPEN</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ETH</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,042</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,102</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #10b981; font-weight: 700;">+$3.68</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(16,185,129,0.3); color: #10b981;">PROFIT</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">SOL</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 7</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$86.41</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$88.69</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #10b981; font-weight: 700;">+$3.30</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(16,185,129,0.3); color: #10b981;">PROFIT</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">BTC</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$69,200</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$70,694</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #10b981; font-weight: 700;">+$2.70</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(16,185,129,0.3); color: #10b981;">PROFIT</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ETH</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$1,998</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,066</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #10b981; font-weight: 700;">+$4.29</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(16,185,129,0.3); color: #10b981;">PROFIT</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ADA</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$0.277</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$0.277</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$0.10</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">FLAT</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">BTC</div><div style="font-size: 8px; color: #888;">HODL</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$77,977</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$74,000</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$25.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">STOP</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">SOL</div><div style="font-size: 8px; color: #888;">HODL</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$105.24</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$98.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$25.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">STOP</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">LINK</div><div style="font-size: 8px; color: #888;">HODL</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$9.94</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$9.20</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$25.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">STOP</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">BTC</div><div style="font-size: 8px; color: #888;">Swing</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$78,446</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$74,500</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$25.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">STOP</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ETH</div><div style="font-size: 8px; color: #888;">Swing</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,439</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,300</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$25.00</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">STOP</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ETH</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 6</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,344</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$2,250</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ef4444; font-weight: 700;">-$31.25</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(239,68,68,0.3); color: #ef4444;">STOP</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">ADA</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 2</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$1.05</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$1.075</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #10b981; font-weight: 700;">+$2.98</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(16,185,129,0.3); color: #10b981;">PROFIT</span></td></tr>
-                    <tr><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-weight: 700; font-size: 11px;">DOT</div><div style="font-size: 8px; color: #888;">Scalper</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><div style="font-size: 8px; color: #666;">Feb 1</div></td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$6.13</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);">$6.42</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #10b981; font-weight: 700;">+$5.91</td><td style="padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: rgba(16,185,129,0.3); color: #10b981;">PROFIT</span></td></tr>
+                    <tr>
+                        <td><div class="asset">BTC #1</div><div class="entry">$69,928</div></td>
+                        <td>$69,928</td>
+                        <td>$69,409</td>
+                        <td class="negative">-$0.93</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">BTC #2</div><div class="entry">$69,141</div></td>
+                        <td>$69,141</td>
+                        <td>$69,409</td>
+                        <td class="positive">+$0.48</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">ETH #1</div><div class="entry">$2,102</div></td>
+                        <td>$2,102</td>
+                        <td>$2,094</td>
+                        <td class="negative">-$0.47</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">ETH #2</div><div class="entry">$2,085</div></td>
+                        <td>$2,085</td>
+                        <td>$2,094</td>
+                        <td class="positive">+$0.54</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">SOL #1</div><div class="entry">$88.76</div></td>
+                        <td>$88.76</td>
+                        <td>$87.62</td>
+                        <td class="negative">-$1.60</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">SOL #2</div><div class="entry">$87.69</div></td>
+                        <td>$87.69</td>
+                        <td>$87.62</td>
+                        <td class="negative">-$0.10</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">DOT #1</div><div class="entry">$1.380</div></td>
+                        <td>$1.380</td>
+                        <td>$1.363</td>
+                        <td class="negative">-$1.53</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">DOT #2</div><div class="entry">$1.364</div></td>
+                        <td>$1.364</td>
+                        <td>$1.363</td>
+                        <td class="negative">-$0.09</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">LINK #1</div><div class="entry">$8.986</div></td>
+                        <td>$8.986</td>
+                        <td>$8.914</td>
+                        <td class="negative">-$1.01</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">LINK #2</div><div class="entry">$8.900</div></td>
+                        <td>$8.900</td>
+                        <td>$8.914</td>
+                        <td class="positive">+$0.20</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">ADA</div><div class="entry">$0.2717</div></td>
+                        <td>$0.2717</td>
+                        <td>$0.2712</td>
+                        <td class="negative">-$0.23</td>
+                        <td>Holding</td>
+                    </tr>
+                    <tr>
+                        <td><div class="asset">XRP</div><div class="entry">$1.4288</div></td>
+                        <td>$1.4288</td>
+                        <td>$1.4329</td>
+                        <td class="positive">+$0.36</td>
+                        <td>Holding</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
         
-        <!-- Footer -->
         <div class="footer">
-            MAXIMUM AUTONOMY MODE • Feb 7, 2026<br>
-            5 Strategies Active • 5 Positions Open • $1,709 Cash Ready<br>
-            Short Selling ACTIVE • 24/7 Trading • Quiet Hours 11pm-6am<br>
-            18 Total Trades Documented with Dates<br>
-            <span style="color: #ef4444;">Trading Aggressively • No Limits • Full Deployment</span>
+            LIVE Dashboard • Feb 8, 2026 • 2:33 AM UTC<br>
+            12 Positions • $2,393 Total • Real-Time Kraken Prices<br>
+            <span style="color: #10b981;">Auto-refresh every 15 minutes</span>
         </div>
     </div>
 </body>
