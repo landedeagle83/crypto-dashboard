@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="refresh" content="900">
-    <title>Crypto Trading Command Center - COMPLETE</title>
+    <title>Crypto Trading Command Center - FULLY AUTONOMOUS</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -15,14 +15,20 @@
             padding: 15px;
         }
         .container { max-width: 100%; margin: 0 auto; }
-        .max-banner {
-            background: linear-gradient(90deg, #dc2626, #991b1b);
+        .autonomy-banner {
+            background: linear-gradient(90deg, #10b981, #059669);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
             text-align: center;
+            border: 2px solid #10b981;
+            animation: pulse 2s infinite;
         }
-        .max-banner h2 { font-size: 18px; margin-bottom: 5px; }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(16,185,129,0.5); }
+            50% { box-shadow: 0 0 20px rgba(16,185,129,0.8); }
+        }
+        .autonomy-banner h2 { font-size: 18px; margin-bottom: 5px; }
         .header {
             text-align: center;
             padding: 20px 0;
@@ -74,13 +80,13 @@
         .negative { color: #ef4444; }
         .neutral { color: #f59e0b; }
         .autonomy-box {
-            background: rgba(220,38,38,0.15);
-            border: 1px solid rgba(220,38,38,0.4);
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.4);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 15px;
         }
-        .autonomy-box h3 { color: #ef4444; font-size: 16px; margin-bottom: 12px; }
+        .autonomy-box h3 { color: #10b981; font-size: 16px; margin-bottom: 12px; }
         .autonomy-item {
             display: flex;
             justify-content: space-between;
@@ -89,20 +95,45 @@
             font-size: 13px;
         }
         .autonomy-item:last-child { border-bottom: none; }
-        .open-positions {
+        .live-prices {
             background: rgba(16,185,129,0.1);
             border: 1px solid rgba(16,185,129,0.3);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 15px;
         }
-        .open-positions h3 { color: #10b981; font-size: 16px; margin-bottom: 15px; }
+        .live-prices h3 { color: #10b981; font-size: 16px; margin-bottom: 15px; }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .price-item {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .price-symbol { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .price-value { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .price-change { font-size: 11px; }
+        .open-positions {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .open-positions h3 { color: #3b82f6; font-size: 16px; margin-bottom: 15px; }
         .position-card {
             background: rgba(0,0,0,0.2);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 10px;
+            border-left: 4px solid #3b82f6;
         }
+        .position-card.near-target { border-left-color: #10b981; }
+        .position-card.near-stop { border-left-color: #ef4444; }
         .position-header {
             display: flex;
             justify-content: space-between;
@@ -120,22 +151,6 @@
         }
         .stop-target { color: #10b981; }
         .stop-loss { color: #ef4444; }
-        .portfolio-summary {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .summary-row:last-child { border-bottom: none; }
-        .summary-label { color: #888; font-size: 14px; }
-        .summary-value { font-weight: 700; font-size: 14px; }
         .trade-history {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -210,25 +225,25 @@
 </head>
 <body>
     <div class="container">
-        <div class="max-banner">
-            <h2>🚀 MAXIMUM AUTONOMY MODE</h2>
-            <p>Unlimited positions • Any size • 24/7 • Strategy 4 ACTIVE</p>
+        <div class="autonomy-banner">
+            <h2>🤖 FULLY AUTONOMOUS MODE - ACTIVE</h2>
+            <p>Auto-executes trades every 15 min • No manual intervention • Live since Feb 8</p>
         </div>
         
         <div class="header">
             <h1>📊 Crypto Command Center</h1>
-            <div class="date">Feb 8, 2026 • 3:13 AM UTC • FULL AUTONOMY</div>
+            <div class="date">Feb 8, 2026 • 3:13 PM UTC • AUTONOMOUS</div>
             <button class="refresh-btn" onclick="location.reload()">🔄 Refresh Data</button>
         </div>
         
         <div class="section-title">📈 Portfolio Overview (5 Strategies)</div>
         <div class="performance-grid">
             <div class="perf-card">
-                <div class="value">$2,393.00</div>
+                <div class="value">$2,341.24</div>
                 <div class="label">Total Value</div>
             </div>
             <div class="perf-card">
-                <div class="value negative">-4.3%</div>
+                <div class="value negative">-6.4%</div>
                 <div class="label">Total Return</div>
             </div>
             <div class="perf-card">
@@ -242,79 +257,118 @@
         </div>
         
         <div class="autonomy-box">
-            <h3>⚡ AUTONOMY SETTINGS (Committed to Memory)</h3>
-            <div class="autonomy-item"><span>Max Positions</span><span style="color: #ef4444; font-weight: 700;">UNLIMITED</span></div>
-            <div class="autonomy-item"><span>Position Size</span><span style="color: #ef4444; font-weight: 700;">ANY</span></div>
-            <div class="autonomy-item"><span>Min Cash Reserve</span><span style="color: #ef4444; font-weight: 700;">$0</span></div>
-            <div class="autonomy-item"><span>Short Selling</span><span style="color: #10b981; font-weight: 700;">✅ ACTIVE</span></div>
-            <div class="autonomy-item"><span>Trading Hours</span><span>24/7 Continuous</span></div>
-            <div class="autonomy-item"><span>Quiet Hours (No Alerts)</span><span>11pm-6am EST</span></div>
+            <h3>⚡ AUTONOMOUS TRADING SETTINGS</h3>
+            <div class="autonomy-item"><span>Trade Execution</span><span style="color: #10b981; font-weight: 700;">AUTOMATIC</span></div>
             <div class="autonomy-item"><span>Check Frequency</span><span>Every 15 minutes</span></div>
+            <div class="autonomy-item"><span>Stop Loss</span><span>-4% (Auto-exit)</span></div>
+            <div class="autonomy-item"><span>Take Profit</span><span>+3% (Auto-exit)</span></div>
+            <div class="autonomy-item"><span>Re-deployment</span><span style="color: #10b981; font-weight: 700;">AUTOMATIC</span></div>
+            <div class="autonomy-item"><span>Alerts</span><span>All trades (except 11pm-6am EST)</span></div>
+        </div>
+        
+        <div class="live-prices">
+            <h3>📊 LIVE Market Prices (Kraken) - Updated 3:13 PM</h3>
+            <div class="price-grid">
+                <div class="price-item">
+                    <div class="price-symbol">₿ BTC</div>
+                    <div class="price-value">$71,010</div>
+                    <div class="price-change positive">+1.5%</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-symbol">Ξ ETH</div>
+                    <div class="price-value">$2,106</div>
+                    <div class="price-change positive">+1.0%</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-symbol">S SOL</div>
+                    <div class="price-value">$87.57</div>
+                    <div class="price-change neutral">-0.1%</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-symbol">● DOT</div>
+                    <div class="price-value">$1.356</div>
+                    <div class="price-change negative">-0.6%</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-symbol">⬡ LINK</div>
+                    <div class="price-value">$8.88</div>
+                    <div class="price-change neutral">-0.2%</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-symbol">₳ ADA</div>
+                    <div class="price-value">$0.272</div>
+                    <div class="price-change positive">+0.1%</div>
+                </div>
+                <div class="price-item">
+                    <div class="price-symbol">✕ XRP</div>
+                    <div class="price-value">$1.433</div>
+                    <div class="price-change positive">+0.3%</div>
+                </div>
+            </div>
         </div>
         
         <div class="open-positions">
-            <h3>🟢 OPEN POSITIONS (12 Active - Full Deployment)</h3>
-            <div class="position-card"><div class="position-header"><span class="position-symbol">BTC #1</span><span class="position-pnl negative">-$0.93</span></div><div class="position-details">Entry: $69,928 | Current: $69,409 | Size: $125</div><div class="position-stops"><span class="stop-target">🎯 $72,026</span><span class="stop-loss">🛑 $67,131</span></div></div>
-            <div class="position-card"><div class="position-header"><span class="position-symbol">BTC #2</span><span class="position-pnl positive">+$0.48</span></div><div class="position-details">Entry: $69,141 | Current: $69,409 | Size: $125</div><div class="position-stops"><span class="stop-target">🎯 $71,215</span><span class="stop-loss">🛑 $66,375</span></div></div>
-            <div class="position-card"><div class="position-header"><span class="position-symbol">ETH #1</span><span class="position-pnl negative">-$0.47</span></div><div class="position-details">Entry: $2,102 | Current: $2,094 | Size: $125</div><div class="position-stops"><span class="stop-target">🎯 $2,165</span><span class="stop-loss">🛑 $2,018</span></div></div>
-            <div class="position-card"><div class="position-header"><span class="position-symbol">ETH #2</span><span class="position-pnl positive">+$0.54</span></div><div class="position-details">Entry: $2,085 | Current: $2,094 | Size: $125</div><div class="position-stops"><span class="stop-target">🎯 $2,147</span><span class="stop-loss">🛑 $2,001</span></div></div>
-            <div class="position-card"><div class="position-header"><span class="position-symbol">SOL #1</span><span class="position-pnl negative">-$1.60</span></div><div class="position-details">Entry: $88.76 | Current: $87.62 | Size: $125</div><div class="position-stops"><span class="stop-target">🎯 $91.42</span><span class="stop-loss">🛑 $85.21</span></div></div>
-            <div class="position-card"><div class="position-header"><span class="position-symbol">SOL #2</span><span class="position-pnl negative">-$0.10</span></div><div class="position-details">Entry: $87.69 | Current: $87.62 | Size: $125</div><div class="position-stops"><span class="stop-target">🎯 $90.32</span><span class="stop-loss">🛑 $84.18</span></div></div>
-        </div>
-        
-        <div class="section-title">💰 Complete Portfolio Breakdown</div>
-        <div class="portfolio-summary">
-            <div class="summary-row"><span class="summary-label">Total Starting Capital</span><span class="summary-value">$2,500.00 (5 × $500)</span></div>
-            <div class="summary-row"><span class="summary-label">Total Current Value</span><span class="summary-value">$2,393.00</span></div>
-            <div class="summary-row"><span class="summary-label">Cash Available</span><span class="summary-value">$34.24 (1.4%)</span></div>
-            <div class="summary-row"><span class="summary-label">Deployed in Positions</span><span class="summary-value">$2,465.76 (98.6%)</span></div>
-            <div class="summary-row"><span class="summary-label">Total Trades</span><span class="summary-value">25 (13 closed + 12 open)</span></div>
-            <div class="summary-row"><span class="summary-label">Short Strategy</span><span class="summary-value" style="color: #a855f7;">ACTIVE - Hunting Breakdowns</span></div>
-        </div>
-        
-        <!-- COMPLETE Trade History WITH DATES -->
-        <div class="section-title">📋 COMPLETE Trade History (25 Total with Dates)</div>
-        <div class="trade-history">
-            <h3>All Trades - Newest First</h3>
-            <table class="trade-table">
-                <thead>
-                    <tr>
-                        <th>Asset</th>
-                        <th>Date</th>
-                        <th>Entry</th>
-                        <th>Exit</th>
-                        <th>P&L</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><div class="trade-symbol">BTC #2</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$69,141</td><td>—</td><td class="trade-pnl positive">+$0.48</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">ETH #2</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$2,085</td><td>—</td><td class="trade-pnl positive">+$0.54</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">SOL #2</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$87.69</td><td>—</td><td class="trade-pnl negative">-$0.10</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">DOT #2</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$1.364</td><td>—</td><td class="trade-pnl negative">-$0.09</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">LINK #2</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$8.900</td><td>—</td><td class="trade-pnl positive">+$0.20</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">ADA</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$0.2717</td><td>—</td><td class="trade-pnl negative">-$0.23</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">XRP</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 8</div></td><td>$1.4288</td><td>—</td><td class="trade-pnl positive">+$0.36</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">BTC #1</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$69,928</td><td>—</td><td class="trade-pnl negative">-$0.93</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">ETH #1</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$2,102</td><td>—</td><td class="trade-pnl negative">-$0.47</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">SOL #1</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$88.76</td><td>—</td><td class="trade-pnl negative">-$1.60</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">DOT #1</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$1.380</td><td>—</td><td class="trade-pnl negative">-$1.53</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">LINK #1</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$8.986</td><td>—</td><td class="trade-pnl negative">-$1.01</td><td><span class="trade-reason reason-open">OPEN</span></td></tr>
-                    <tr><td><div class="trade-symbol">ETH</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$2,042</td><td>$2,102</td><td class="trade-pnl positive">+$3.68</td><td><span class="trade-reason reason-profit">PROFIT</span></td></tr>
-                    <tr><td><div class="trade-symbol">SOL</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 7</div></td><td>$86.41</td><td>$88.69</td><td class="trade-pnl positive">+$3.30</td><td><span class="trade-reason reason-profit">PROFIT</span></td></tr>
-                    <tr><td><div class="trade-symbol">BTC</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 6</div></td><td>$69,200</td><td>$70,694</td><td class="trade-pnl positive">+$2.70</td><td><span class="trade-reason reason-profit">PROFIT</span></td></tr>
-                    <tr><td><div class="trade-symbol">ETH</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 6</div></td><td>$1,998</td><td>$2,066</td><td class="trade-pnl positive">+$4.29</td><td><span class="trade-reason reason-profit">PROFIT</span></td></tr>
-                    <tr><td><div class="trade-symbol">ADA</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 6</div></td><td>$0.277</td><td>$0.277</td><td class="trade-pnl negative">-$0.10</td><td><span class="trade-reason reason-stop">FLAT</span></td></tr>
-                    <tr><td><div class="trade-symbol">BTC</div><div class="trade-strategy">HODL</div></td><td><div class="trade-date">Feb 6</div></td><td>$77,977</td><td>$74,000</td><td class="trade-pnl negative">-$25.00</td><td><span class="trade-reason reason-stop">STOP</span></td></tr>
-                    <tr><td><div class="trade-symbol">SOL</div><div class="trade-strategy">HODL</div></td><td><div class="trade-date">Feb 6</div></td><td>$105.24</td><td>$98.00</td><td class="trade-pnl negative">-$25.00</td><td><span class="trade-reason reason-stop">STOP</span></td></tr>
-                    <tr><td><div class="trade-symbol">LINK</div><div class="trade-strategy">HODL</div></td><td><div class="trade-date">Feb 6</div></td><td>$9.94</td><td>$9.20</td><td class="trade-pnl negative">-$25.00</td><td><span class="trade-reason reason-stop">STOP</span></td></tr>
-                    <tr><td><div class="trade-symbol">BTC</div><div class="trade-strategy">Swing</div></td><td><div class="trade-date">Feb 6</div></td><td>$78,446</td><td>$74,500</td><td class="trade-pnl negative">-$25.00</td><td><span class="trade-reason reason-stop">STOP</span></td></tr>
-                    <tr><td><div class="trade-symbol">ETH</div><div class="trade-strategy">Swing</div></td><td><div class="trade-date">Feb 6</div></td><td>$2,439</td><td>$2,300</td><td class="trade-pnl negative">-$25.00</td><td><span class="trade-reason reason-stop">STOP</span></td></tr>
-                    <tr><td><div class="trade-symbol">ETH</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 6</div></td><td>$2,344</td><td>$2,250</td><td class="trade-pnl negative">-$31.25</td><td><span class="trade-reason reason-stop">STOP</span></td></tr>
-                    <tr><td><div class="trade-symbol">ADA</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 2</div></td><td>$1.05</td><td>$1.075</td><td class="trade-pnl positive">+$2.98</td><td><span class="trade-reason reason-profit">PROFIT</span></td></tr>
-                    <tr><td><div class="trade-symbol">DOT</div><div class="trade-strategy">Scalper</div></td><td><div class="trade-date">Feb 1</div></td><td>$6.13</td><td>$6.42</td><td class="trade-pnl positive">+$5.91</td><td><span class="trade-reason reason-profit">PROFIT</span></td></tr>
-                </tbody>
-            </table>
+            <h3>🟢 12 OPEN POSITIONS (Auto-monitoring Active)</h3>
+            <div class="position-card near-target">
+                <div class="position-header"><span class="position-symbol">BTC #2 🎯 CLOSE!</span><span class="position-pnl positive">+2.7%</span></div>
+                <div class="position-details">Entry: $69,141 | Current: $71,010 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $71,215 ($205 away)</span><span class="stop-loss">🛑 Stop: $66,375</span></div>
+            </div>
+            <div class="position-card near-target">
+                <div class="position-header"><span class="position-symbol">ETH #1 🎯 CLOSE!</span><span class="position-pnl positive">+0.2%</span></div>
+                <div class="position-details">Entry: $2,102 | Current: $2,106 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $2,165 ($59 away)</span><span class="stop-loss">🛑 Stop: $2,018</span></div>
+            </div>
+            <div class="position-card near-target">
+                <div class="position-header"><span class="position-symbol">ETH #2 🎯 CLOSE!</span><span class="position-pnl positive">+1.0%</span></div>
+                <div class="position-details">Entry: $2,085 | Current: $2,106 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $2,147 ($41 away)</span><span class="stop-loss">🛑 Stop: $2,001</span></div>
+            </div>
+            <div class="position-card near-target">
+                <div class="position-header"><span class="position-symbol">XRP 🎯 CLOSE!</span><span class="position-pnl positive">+0.3%</span></div>
+                <div class="position-details">Entry: $1.429 | Current: $1.433 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $1.472 ($39 away)</span><span class="stop-loss">🛑 Stop: $1.372</span></div>
+            </div>
+            <div class="position-card">
+                <div class="position-header"><span class="position-symbol">BTC #1</span><span class="position-pnl positive">+1.5%</span></div>
+                <div class="position-details">Entry: $69,928 | Current: $71,010 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $72,026</span><span class="stop-loss">🛑 Stop: $67,131</span></div>
+            </div>
+            <div class="position-card">
+                <div class="position-header"><span class="position-symbol">ADA</span><span class="position-pnl positive">+0.1%</span></div>
+                <div class="position-details">Entry: $0.272 | Current: $0.272 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $0.280</span><span class="stop-loss">🛑 Stop: $0.261</span></div>
+            </div>
+            <div class="position-card">
+                <div class="position-header"><span class="position-symbol">SOL #2</span><span class="position-pnl negative">-0.1%</span></div>
+                <div class="position-details">Entry: $87.69 | Current: $87.57 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $90.32</span><span class="stop-loss">🛑 Stop: $84.18</span></div>
+            </div>
+            <div class="position-card">
+                <div class="position-header"><span class="position-symbol">LINK #2</span><span class="position-pnl negative">-0.2%</span></div>
+                <div class="position-details">Entry: $8.90 | Current: $8.88 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $9.17</span><span class="stop-loss">🛑 Stop: $8.54</span></div>
+            </div>
+            <div class="position-card">
+                <div class="position-header"><span class="position-symbol">DOT #2</span><span class="position-pnl negative">-0.6%</span></div>
+                <div class="position-details">Entry: $1.364 | Current: $1.356 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $1.405</span><span class="stop-loss">🛑 Stop: $1.310</span></div>
+            </div>
+            <div class="position-card near-stop">
+                <div class="position-header"><span class="position-symbol">LINK #1 ⚠️</span><span class="position-pnl negative">-1.2%</span></div>
+                <div class="position-details">Entry: $8.99 | Current: $8.88 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $9.26</span><span class="stop-loss">🛑 Stop: $8.63</span></div>
+            </div>
+            <div class="position-card near-stop">
+                <div class="position-header"><span class="position-symbol">DOT #1 ⚠️</span><span class="position-pnl negative">-1.7%</span></div>
+                <div class="position-details">Entry: $1.380 | Current: $1.356 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $1.421</span><span class="stop-loss">🛑 Stop: $1.324</span></div>
+            </div>
+            <div class="position-card near-stop">
+                <div class="position-header"><span class="position-symbol">SOL #1 ⚠️</span><span class="position-pnl negative">-1.3%</span></div>
+                <div class="position-details">Entry: $88.76 | Current: $87.57 | Size: $125</div>
+                <div class="position-stops"><span class="stop-target">🎯 Target: $91.42</span><span class="stop-loss">🛑 Stop: $85.21</span></div>
+            </div>
         </div>
         
         <div class="section-title">🎯 All 5 Strategies</div>
@@ -325,10 +379,10 @@
         <div class="strategy-card"><div class="strategy-header"><div class="strategy-name">🟣 Strategy 5: Stat Arb</div><div class="strategy-badge badge-green">+0.2%</div></div><div class="strategy-stats"><div class="stat"><div class="stat-value">$501.00</div><div class="stat-label">Value</div></div><div class="stat"><div class="stat-value">$500</div><div class="stat-label">Start</div></div><div class="stat"><div class="stat-value">1</div><div class="stat-label">Pair</div></div><div class="stat"><div class="stat-value">—</div><div class="stat-label">Win</div></div></div></div>
         
         <div class="footer">
-            MAXIMUM AUTONOMY MODE • Feb 8, 2026<br>
-            5 Strategies • 12 Positions Open • $34 Cash • 98.6% Deployed<br>
-            25 Total Trades Documented with Dates • Short Selling ACTIVE<br>
-            <span style="color: #ef4444;">Trading Aggressively • No Limits • Full Deployment</span>
+            🤖 FULLY AUTONOMOUS MODE • Feb 8, 2026<br>
+            Auto-trading every 15 min • 12 Positions • $34 Cash • 98.6% Deployed<br>
+            25 Total Trades • Short Selling ACTIVE<br>
+            <span style="color: #10b981;">System will auto-execute when targets/stops hit</span>
         </div>
     </div>
 </body>
